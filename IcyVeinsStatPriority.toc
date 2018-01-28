@@ -1,7 +1,8 @@
 ## Interface: 70300
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
-## Version: r1
+## Version: r1-release
 ## Author: fyhcslb
+## SavedVariables: IcyVeinsStatPriority
 
 Data.lua
 Core.lua
