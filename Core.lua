@@ -23,8 +23,8 @@ local function SetFrame(bgColor, borderColor, fontColor, fontSize, show)
     
     frame:SetNormalFontObject(IVSP_FONT)
 
-    frame:SetBackdropColor(unpack(IcyVeinsStatPriority["bgColor"]))
-    frame:SetBackdropBorderColor(unpack(IcyVeinsStatPriority["borderColor"]))
+    frame:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+    frame:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
     frame:SetHeight(fontSize + 7)
 
     if show then
@@ -35,6 +35,7 @@ local function SetFrame(bgColor, borderColor, fontColor, fontSize, show)
 end
 
 local function SetText(text)
+    if not text then return end
     frame:SetText(text)
     frame:SetWidth(frame:GetFontString():GetStringWidth() + 20)
 end
@@ -48,8 +49,8 @@ local function AddItem(text)
     item:Hide()
     item:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
     item:SetPushedTextOffset(0, -1)
-    item:SetBackdropColor(unpack(IcyVeinsStatPriority["bgColor"]))
-    item:SetBackdropBorderColor(unpack(IcyVeinsStatPriority["borderColor"]))
+    item:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+    item:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
     item:SetNormalFontObject(IVSP_FONT)
     item:SetWidth(200)
     item:SetHeight(select(2, IVSP_FONT:GetFont()) + 7)
@@ -67,7 +68,7 @@ local function AddItem(text)
         for _, i in pairs(items) do
             i:Hide()
         end
-        IcyVeinsStatPriority["selected"][currentSpecID] = item.n
+        IVSP_Config["selected"][currentSpecID] = item.n
         SetText(IVSP:GetSPText(currentSpecID))
     end)
 end
@@ -107,20 +108,20 @@ local function IVSPColorCallback(restore)
     
     colorPicker:SetBackdropColor(newR, newG, newB, newA)
     if colorPicker:GetName() == "IcyVeinsBGColorPicker" then
-        IcyVeinsStatPriority["bgColor"] = {newR, newG, newB, newA}
-        frame:SetBackdropColor(unpack(IcyVeinsStatPriority["bgColor"]))
+        IVSP_Config["bgColor"] = {newR, newG, newB, newA}
+        frame:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
         for _, i in pairs(items) do
-            i:SetBackdropColor(unpack(IcyVeinsStatPriority["bgColor"]))
+            i:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
         end
     elseif colorPicker:GetName() == "IcyVeinsBorderColorPicker" then
-        IcyVeinsStatPriority["borderColor"] = {newR, newG, newB, newA}
-        frame:SetBackdropBorderColor(unpack(IcyVeinsStatPriority["borderColor"]))
+        IVSP_Config["borderColor"] = {newR, newG, newB, newA}
+        frame:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
         for _, i in pairs(items) do
-            i:SetBackdropBorderColor(unpack(IcyVeinsStatPriority["borderColor"]))
+            i:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
         end
     elseif colorPicker:GetName() == "IcyVeinsFontColorPicker" then
-        IcyVeinsStatPriority["fontColor"] = {newR, newG, newB, newA}
-        IVSP_FONT:SetTextColor(unpack(IcyVeinsStatPriority["fontColor"]))
+        IVSP_Config["fontColor"] = {newR, newG, newB, newA}
+        IVSP_FONT:SetTextColor(unpack(IVSP_Config["fontColor"]))
     end
 end
 
@@ -144,7 +145,7 @@ local function CreateColorPicker(name, colorTable)
     picker:SetScript("OnHide", function() picker:Hide() end)
     picker:SetScript("OnClick", function()
         colorPicker = picker
-        ShowColorPicker(IcyVeinsStatPriority[colorTable], IVSPColorCallback)
+        ShowColorPicker(IVSP_Config[colorTable], IVSPColorCallback)
     end)
     return picker
 end
@@ -201,23 +202,23 @@ end)
 
 function frame:ADDON_LOADED(arg1)
     if arg1 == addonName then
-        if type(IcyVeinsStatPriority) ~= "table" then IcyVeinsStatPriority = {} end
-        if type(IcyVeinsStatPriority["show"]) ~= "boolean" then IcyVeinsStatPriority["show"] = true end
-        if type(IcyVeinsStatPriority["bgColor"]) ~= "table" then IcyVeinsStatPriority["bgColor"] = {.1, .1, .1, .9} end
-        if type(IcyVeinsStatPriority["borderColor"]) ~= "table" then IcyVeinsStatPriority["borderColor"] = {0, 0, 0, 1} end
-        if type(IcyVeinsStatPriority["fontColor"]) ~= "table" then IcyVeinsStatPriority["fontColor"] = {1, 1, 1, 1} end
-        if type(IcyVeinsStatPriority["fontSize"]) ~= "number" then IcyVeinsStatPriority["fontSize"] = 13 end
-        if type(IcyVeinsStatPriority["selected"]) ~= "table" then IcyVeinsStatPriority["selected"] = {} end
+        if type(IVSP_Config) ~= "table" then IVSP_Config = {} end
+        if type(IVSP_Config["show"]) ~= "boolean" then IVSP_Config["show"] = true end
+        if type(IVSP_Config["bgColor"]) ~= "table" then IVSP_Config["bgColor"] = {.1, .1, .1, .9} end
+        if type(IVSP_Config["borderColor"]) ~= "table" then IVSP_Config["borderColor"] = {0, 0, 0, 1} end
+        if type(IVSP_Config["fontColor"]) ~= "table" then IVSP_Config["fontColor"] = {1, 1, 1, 1} end
+        if type(IVSP_Config["fontSize"]) ~= "number" then IVSP_Config["fontSize"] = 13 end
+        if type(IVSP_Config["selected"]) ~= "table" then IVSP_Config["selected"] = {} end
 
-        SetFrame(IcyVeinsStatPriority["bgColor"], 
-            IcyVeinsStatPriority["borderColor"], 
-            IcyVeinsStatPriority["fontColor"], 
-            IcyVeinsStatPriority["fontSize"],
-            IcyVeinsStatPriority["show"])
+        SetFrame(IVSP_Config["bgColor"], 
+            IVSP_Config["borderColor"], 
+            IVSP_Config["fontColor"], 
+            IVSP_Config["fontSize"],
+            IVSP_Config["show"])
 
-        bgColorPicker:SetBackdropColor(unpack(IcyVeinsStatPriority["bgColor"]))
-        borderColorPicker:SetBackdropColor(unpack(IcyVeinsStatPriority["borderColor"]))
-        fontColorPicker:SetBackdropColor(unpack(IcyVeinsStatPriority["fontColor"]))
+        bgColorPicker:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+        borderColorPicker:SetBackdropColor(unpack(IVSP_Config["borderColor"]))
+        fontColorPicker:SetBackdropColor(unpack(IVSP_Config["fontColor"]))
     end
 end
 
@@ -235,6 +236,9 @@ function frame:ACTIVE_TALENT_GROUP_CHANGED()
         currentSpecID = specID
         SetText(IVSP:GetSPText(currentSpecID))
         LoadList()
+        bgColorPicker:Hide()
+        borderColorPicker:Hide()
+        fontColorPicker:Hide()
     end
 end
 
@@ -243,16 +247,16 @@ function SlashCmdList.ICYVEINSSTATPRIORITY(msg, editbox)
     local command, rest = msg:match("^(%S*)%s*(.-)$")
     if command == "show" then
         frame:Show()
-        IcyVeinsStatPriority["show"] = true
+        IVSP_Config["show"] = true
     elseif command == "hide" then
         frame:Hide()
-        IcyVeinsStatPriority["show"] = false
+        IVSP_Config["show"] = false
     elseif command == "font" then
-        IcyVeinsStatPriority["fontSize"] = tonumber(rest) or 13
-        IVSP_FONT:SetFont(GameFontNormal:GetFont(), IcyVeinsStatPriority["fontSize"])
-        frame:SetHeight(IcyVeinsStatPriority["fontSize"] + 7)
+        IVSP_Config["fontSize"] = tonumber(rest) or 13
+        IVSP_FONT:SetFont(GameFontNormal:GetFont(), IVSP_Config["fontSize"])
+        frame:SetHeight(IVSP_Config["fontSize"] + 7)
     elseif command == "reset" then
-        IcyVeinsStatPriority = nil
+        IVSP_Config = nil
         ReloadUI()
     else -- help
         print("|cff69CCF0Icy Veins Stat Priority help:|r")
