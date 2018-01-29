@@ -130,7 +130,7 @@ local data = {
     -- 261 - Rogue: Subtlety
     [261] = {
         {"Critical Strike > Versatility > Mastery > Agility > Haste", "Tier 21 4-piece"},
-        {"Agility > Mastery >= Versatility > Critical Strike > Haste", "Tier 21 4-piece"},
+        {"Agility > Mastery >= Versatility > Critical Strike > Haste", "General"},
     },
 
     -- 262 - Shaman: Elemental

@@ -109,6 +109,7 @@ fontColorPicker:SetPoint("RIGHT", borderColorPicker, "LEFT", -1, 0)
 -- list
 -----------------------------------------------
 local items = {}
+local textWidth = 0
 local function AddItem(text)
     local item = CreateFrame("Button", nil, frame)
     item:Hide()
@@ -121,8 +122,14 @@ local function AddItem(text)
     item:SetHeight(select(2, IVSP_FONT:GetFont()) + 7)
     
     item:SetText(text)
-    item:GetFontString():SetPoint("LEFT", 5, 0)
-    item:GetFontString():SetPoint("RIGHT", -5, 0)
+    textWidth = max(item:GetFontString():GetStringWidth(), textWidth)
+
+    -- highlight texture
+    item.highlight = item:CreateTexture()
+    item.highlight:SetColorTexture(.5, 1, 0, 1)
+    item.highlight:SetSize(5, item:GetHeight() - 2)
+    item.highlight:SetPoint("LEFT", 1, 0)
+    item.highlight:Hide()
 
     table.insert(items, item)
     item.n = #items
@@ -135,8 +142,10 @@ local function AddItem(text)
         fontColorPicker:Hide()
 
         for _, i in pairs(items) do
+            i.highlight:Hide()
             i:Hide()
         end
+        item.highlight:Show()
         IVSP_Config["selected"][currentSpecID] = item.n
         SetText(IVSP:GetSPText(currentSpecID))
     end)
@@ -146,7 +155,8 @@ local function LoadList()
     bgColorPicker:Hide()
     borderColorPicker:Hide()
     fontColorPicker:Hide()
-
+    
+    textWidth = 0
     for _, i in pairs(items) do
         i:ClearAllPoints()
         i:Hide()
@@ -164,6 +174,17 @@ local function LoadList()
         else
             items[k]:SetPoint("TOP", items[k-1], "BOTTOM", 0, -1)
         end
+    end
+
+    -- update width
+    for _, i in pairs(items) do
+        i:SetWidth(textWidth + 20)
+    end
+
+    if IVSP_Config["selected"][currentSpecID] then
+        items[IVSP_Config["selected"][currentSpecID]].highlight:Show()
+    else -- highlight first
+        items[1].highlight:Show()
     end
 end
 
