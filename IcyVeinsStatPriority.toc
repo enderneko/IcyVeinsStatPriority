@@ -1,6 +1,6 @@
 ## Interface: 70300
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
-## Version: r1-release
+## Version: r2-release
 ## Author: fyhcslb
 ## SavedVariables: IVSP_Config
 

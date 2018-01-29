@@ -41,60 +41,6 @@ local function SetText(text)
 end
 
 -----------------------------------------------
--- list
------------------------------------------------
-local items = {}
-local function AddItem(text)
-    local item = CreateFrame("Button", nil, frame)
-    item:Hide()
-    item:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
-    item:SetPushedTextOffset(0, -1)
-    item:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
-    item:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
-    item:SetNormalFontObject(IVSP_FONT)
-    item:SetWidth(200)
-    item:SetHeight(select(2, IVSP_FONT:GetFont()) + 7)
-    
-    item:SetText(text)
-    item:GetFontString():SetPoint("LEFT", 5, 0)
-    item:GetFontString():SetPoint("RIGHT", -5, 0)
-
-    table.insert(items, item)
-    item.n = #items
-    
-    item:SetScript("OnHide", function() item:Hide() end)
-
-    item:SetScript("OnClick", function()
-        for _, i in pairs(items) do
-            i:Hide()
-        end
-        IVSP_Config["selected"][currentSpecID] = item.n
-        SetText(IVSP:GetSPText(currentSpecID))
-    end)
-end
-
-local function LoadList()
-    for _, i in pairs(items) do
-        i:ClearAllPoints()
-        i:Hide()
-        i:SetParent(nil)
-    end
-    wipe(items)
-
-    local desc = IVSP:GetSPDesc(currentSpecID)
-    if not desc then return end
-
-    for k, s in pairs(desc) do
-        AddItem(s)
-        if k == 1 then
-            items[1]:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
-        else
-            items[k]:SetPoint("TOP", items[k-1], "BOTTOM", 0, -1)
-        end
-    end
-end
-
------------------------------------------------
 -- color picker -- https://wow.gamepedia.com/Using_the_ColorPickerFrame
 -----------------------------------------------
 local colorPicker
@@ -158,6 +104,68 @@ borderColorPicker:SetPoint("RIGHT", bgColorPicker, "LEFT", -1, 0)
 
 local fontColorPicker = CreateColorPicker("IcyVeinsFontColorPicker", "fontColor")
 fontColorPicker:SetPoint("RIGHT", borderColorPicker, "LEFT", -1, 0)
+
+-----------------------------------------------
+-- list
+-----------------------------------------------
+local items = {}
+local function AddItem(text)
+    local item = CreateFrame("Button", nil, frame)
+    item:Hide()
+    item:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
+    item:SetPushedTextOffset(0, -1)
+    item:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+    item:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
+    item:SetNormalFontObject(IVSP_FONT)
+    item:SetWidth(200)
+    item:SetHeight(select(2, IVSP_FONT:GetFont()) + 7)
+    
+    item:SetText(text)
+    item:GetFontString():SetPoint("LEFT", 5, 0)
+    item:GetFontString():SetPoint("RIGHT", -5, 0)
+
+    table.insert(items, item)
+    item.n = #items
+    
+    item:SetScript("OnHide", function() item:Hide() end)
+
+    item:SetScript("OnClick", function()
+        bgColorPicker:Hide()
+        borderColorPicker:Hide()
+        fontColorPicker:Hide()
+
+        for _, i in pairs(items) do
+            i:Hide()
+        end
+        IVSP_Config["selected"][currentSpecID] = item.n
+        SetText(IVSP:GetSPText(currentSpecID))
+    end)
+end
+
+local function LoadList()
+    bgColorPicker:Hide()
+    borderColorPicker:Hide()
+    fontColorPicker:Hide()
+
+    for _, i in pairs(items) do
+        i:ClearAllPoints()
+        i:Hide()
+        i:SetParent(nil)
+    end
+    wipe(items)
+
+    local desc = IVSP:GetSPDesc(currentSpecID)
+    if not desc then return end
+
+    for k, s in pairs(desc) do
+        AddItem(s)
+        if k == 1 then
+            items[1]:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
+        else
+            items[k]:SetPoint("TOP", items[k-1], "BOTTOM", 0, -1)
+        end
+    end
+end
 
 -----------------------------------------------
 -- frame OnClick
@@ -236,9 +244,6 @@ function frame:ACTIVE_TALENT_GROUP_CHANGED()
         currentSpecID = specID
         SetText(IVSP:GetSPText(currentSpecID))
         LoadList()
-        bgColorPicker:Hide()
-        borderColorPicker:Hide()
-        fontColorPicker:Hide()
     end
 end
 

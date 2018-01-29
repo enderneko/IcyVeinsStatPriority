@@ -35,15 +35,16 @@ local data = {
     },
     -- Druid: Feral
     [103] = {
-        {"Versatility > Critical Strike > Haste > Agility > Mastery", "Incarnation/Moment of Clarity"},
+        {"Versatility > Critical Strike > Haste > Agility > Mastery"},
     },
     -- Druid: Guardian
     [104] = {
-        {"Mastery = Haste > Critical Strike = Versatility > Intellect"},
+        {"Armor > Stamina > Versatility > Mastery > Haste > Critical Strike > Agility"},
     },
     -- Druid: Restoration
     [105] = {
-        {"Mastery = Haste > Critical Strike = Versatility > Intellect"},
+        {"Mastery > Haste ≈ Critical Strike > Versatility > Intellect", "Raid Healing"},
+        {"Mastery > Haste > Critical Strike > Versatility > Intellect", "Mythic+ Healing"},
     },
 
     -- 253 - Hunter: Beast Mastery
@@ -66,7 +67,7 @@ local data = {
     -- 63 - Mage: Fire
     [63] = {
         {"Critical Strike > Haste = Mastery > Versatility > Intellect", "Tier 21 4-piece"},
-        {"Mastery > Haste = Mastery > Intellect > Critical Strike", "General"},
+        {"Mastery > Haste = Versatility > Intellect > Critical Strike", "General"},
     },
     -- 64 - Mage: Frost
     [64] = {
@@ -187,6 +188,8 @@ function IVSP:GetSPText(specID)
     text = string.gsub(text, "Critical Strike", STAT_CRITICAL_STRIKE)
     text = string.gsub(text, "Mastery", STAT_MASTERY)
     text = string.gsub(text, "Versatility", STAT_VERSATILITY)
+    text = string.gsub(text, "Armor", STAT_ARMOR)
+    text = string.gsub(text, "Stamina", ITEM_MOD_STAMINA_SHORT)
     text = string.gsub(text, "Strength", SPEC_FRAME_PRIMARY_STAT_STRENGTH)
     text = string.gsub(text, "Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
     text = string.gsub(text, "Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
