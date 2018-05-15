@@ -43,6 +43,7 @@ end
 -----------------------------------------------
 -- color picker -- https://wow.gamepedia.com/Using_the_ColorPickerFrame
 -----------------------------------------------
+local items = {}
 local colorPicker
 local function IVSPColorCallback(restore)
     local newR, newG, newB, newA
@@ -82,33 +83,66 @@ local function ShowColorPicker(colorTable, changedCallback)
     ColorPickerFrame:Show()
 end
 
-local function CreateColorPicker(name, colorTable)
+local function CreateColorPicker(name, colorTable, tooltip)
     local picker = CreateFrame("Button", name, frame)
     picker:SetSize(15, 15)
     picker:Hide()
     picker:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
     picker:SetBackdropBorderColor(.8, .8, .8, 1)
     picker:SetScript("OnHide", function() picker:Hide() end)
-    picker:SetScript("OnClick", function()
-        colorPicker = picker
-        ShowColorPicker(IVSP_Config[colorTable], IVSPColorCallback)
+    picker:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    picker:SetScript("OnClick", function(self, button)
+        if button == "LeftButton" then
+            colorPicker = picker
+            ShowColorPicker(IVSP_Config[colorTable], IVSPColorCallback)
+        elseif button == "RightButton" then
+            if colorTable == "bgColor" then
+                IVSP_Config["bgColor"] = {.1, .1, .1, .9}
+                frame:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+                for _, i in pairs(items) do
+                    i:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+                end
+                picker:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
+            elseif colorTable == "borderColor" then
+                IVSP_Config["borderColor"] = {0, 0, 0, 1}
+                frame:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
+                for _, i in pairs(items) do
+                    i:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
+                end
+                picker:SetBackdropColor(unpack(IVSP_Config["borderColor"]))
+            elseif colorTable == "fontColor" then
+                IVSP_Config["fontColor"] = {1, 1, 1, 1}
+                IVSP_FONT:SetTextColor(unpack(IVSP_Config["fontColor"]))
+                picker:SetBackdropColor(unpack(IVSP_Config["fontColor"]))
+            end
+        end
+    end)
+    
+    picker:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(picker, "ANCHOR_TOP")
+        GameTooltip:AddLine(tooltip)
+        GameTooltip:AddLine("|cffffffffRight-click to reset.")
+        GameTooltip:Show()
+    end)
+    
+    picker:SetScript("OnLeave", function()
+        GameTooltip:Hide()
     end)
     return picker
 end
 
-local bgColorPicker = CreateColorPicker("IcyVeinsBGColorPicker", "bgColor")
+local bgColorPicker = CreateColorPicker("IcyVeinsBGColorPicker", "bgColor", "Background Color")
 bgColorPicker:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", 0, 1)
 
-local borderColorPicker = CreateColorPicker("IcyVeinsBorderColorPicker", "borderColor")
+local borderColorPicker = CreateColorPicker("IcyVeinsBorderColorPicker", "borderColor", "Border Color")
 borderColorPicker:SetPoint("RIGHT", bgColorPicker, "LEFT", -1, 0)
 
-local fontColorPicker = CreateColorPicker("IcyVeinsFontColorPicker", "fontColor")
+local fontColorPicker = CreateColorPicker("IcyVeinsFontColorPicker", "fontColor", "Font Color")
 fontColorPicker:SetPoint("RIGHT", borderColorPicker, "LEFT", -1, 0)
 
 -----------------------------------------------
 -- list
 -----------------------------------------------
-local items = {}
 local textWidth = 0
 local function AddItem(text)
     local item = CreateFrame("Button", nil, frame)
