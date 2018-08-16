@@ -23,8 +23,8 @@ local function SetFrame(bgColor, borderColor, fontColor, fontSize, show)
     
     frame:SetNormalFontObject(IVSP_FONT)
 
-    frame:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
-    frame:SetBackdropBorderColor(unpack(IVSP_Config["borderColor"]))
+    frame:SetBackdropColor(unpack(bgColor))
+    frame:SetBackdropBorderColor(unpack(borderColor))
     frame:SetHeight(fontSize + 7)
 
     if show then
@@ -39,6 +39,34 @@ local function SetText(text)
     frame:SetText(text)
     frame:SetWidth(frame:GetFontString():GetStringWidth() + 20)
 end
+
+-----------------------------------------------
+-- frame (help)
+-----------------------------------------------
+local helpFrame = CreateFrame("Frame", "IcyVeinsStatPriorityHelpFrame", frame)
+helpFrame:Hide()
+helpFrame:SetSize(220, 80)
+helpFrame:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
+helpFrame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
+
+local helpFrameText = helpFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT")
+helpFrameText:SetPoint("TOPLEFT", 5, -5)
+helpFrameText:SetPoint("BOTTOMRIGHT", -5, 5)
+helpFrameText:SetSpacing(5)
+
+local function SetHelpFrame(bgColor, borderColor)
+    helpFrame:SetBackdropColor(unpack(bgColor))
+    helpFrame:SetBackdropBorderColor(unpack(borderColor))
+    helpFrameText:SetText("<- Click on IVSP to change its color.\nIVSP List will show up ATST if there're multiple stat proirities for your current spec. ")
+    helpFrame:Show()
+end
+
+helpFrame:SetScript("OnShow", function()
+    if IVSP_Config["helpViewed"] then
+        helpFrame:Hide()
+    end
+    IVSP_Config["helpViewed"] = true
+end)
 
 -----------------------------------------------
 -- color picker -- https://wow.gamepedia.com/Using_the_ColorPickerFrame
@@ -251,6 +279,11 @@ frame:SetScript("OnClick", function()
     else
         fontColorPicker:Show()
     end
+
+    -- hide help on click
+    if helpFrame:IsShown() then
+        helpFrame:Hide()
+    end
 end)
 
 -----------------------------------------------
@@ -272,12 +305,13 @@ function frame:ADDON_LOADED(arg1)
         if type(IVSP_Config["fontColor"]) ~= "table" then IVSP_Config["fontColor"] = {1, 1, 1, 1} end
         if type(IVSP_Config["fontSize"]) ~= "number" then IVSP_Config["fontSize"] = 13 end
         if type(IVSP_Config["selected"]) ~= "table" then IVSP_Config["selected"] = {} end
+        if type(IVSP_Config["helpViewed"]) ~= "boolean" then IVSP_Config["helpViewed"] = false end
 
-        SetFrame(IVSP_Config["bgColor"], 
-            IVSP_Config["borderColor"], 
-            IVSP_Config["fontColor"], 
-            IVSP_Config["fontSize"],
-            IVSP_Config["show"])
+        SetFrame(IVSP_Config["bgColor"], IVSP_Config["borderColor"], IVSP_Config["fontColor"], IVSP_Config["fontSize"], IVSP_Config["show"])
+
+        if not IVSP_Config["helpViewed"] then
+            SetHelpFrame(IVSP_Config["bgColor"], IVSP_Config["borderColor"])
+        end
 
         bgColorPicker:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
         borderColorPicker:SetBackdropColor(unpack(IVSP_Config["borderColor"]))
