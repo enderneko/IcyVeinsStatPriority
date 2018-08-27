@@ -63,7 +63,7 @@ local data = {
     },
     -- 63 - Mage: Fire
     [63] = {
-        {"Intellect > Mastery > Versatility > Critical Strike > Haste"},
+        {"Intellect > Mastery > Versatility > Haste > Critical Strike"},
     },
     -- 64 - Mage: Frost
     [64] = {
@@ -72,7 +72,7 @@ local data = {
 
     -- 268 - Monk: Brewmaster
     [268] = {
-        {"Agility > Critical Strike = Versatility > Mastery > Haste"},
+        {"Agility > Critical Strike = Versatility = Mastery > Haste"},
     },
     -- 269 - Monk: Windwalker
     [269] = {
@@ -122,13 +122,14 @@ local data = {
     },
     -- 261 - Rogue: Subtlety
     [261] = {
-        {"Critical Strike > Mastery > Haste > Versatility"},
+        {"Critical Strike > Haste > Mastery > Versatility", "Single-Target"},
+        {"Mastery > Critical Strike > Versatility > Haste", "Multi-Target"},
     },
 
     -- 262 - Shaman: Elemental
     [262] = {
-        {"Intellect > Haste 60% > Versatility 20% > Critical Strike 10% > Mastery 10%", "Generic"},
-        {"Intellect > Haste 60% > Critical Strike 20% > Versatility 10% > Mastery 10%", "AoE"},
+        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Single-Target"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Multi-Target"},
     },
     -- 263 - Shaman: Enhancement
     [263] = {
@@ -136,8 +137,7 @@ local data = {
     },
     -- 264 - Shaman: Restoration
     [264] = {
-        {"Intellect > Critical Strike > Versatility > Haste = Mastery", "Raids"},
-        {"Intellect > Haste > Critical Strike = Versatility > Mastery", "Dungeons"},
+        {"Intellect > Critical Strike > Versatility > Haste = Mastery"},
     },
 
     -- 265 - Warlock: Affliction
@@ -155,7 +155,7 @@ local data = {
 
     -- 71 - Warrior: Arms
     [71] = {
-        {"Strength > Critical Strike > Haste > Versatility > Mastery"},
+        {"Strength > Haste > Critical Strike > Mastery > Versatility"},
     },
     -- 72 - Warrior: Fury
     [72] = {

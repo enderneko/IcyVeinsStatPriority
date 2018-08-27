@@ -57,7 +57,7 @@ helpFrameText:SetSpacing(5)
 local function SetHelpFrame(bgColor, borderColor)
     helpFrame:SetBackdropColor(unpack(bgColor))
     helpFrame:SetBackdropBorderColor(unpack(borderColor))
-    helpFrameText:SetText("<- Click on IVSP to change its color.\nIVSP List will show up ATST if there're multiple stat proirities for your current spec. ")
+    helpFrameText:SetText("<- Click on IVSP to change its color.\nIVSP List will show up ATST if there're multiple stat priorities for your current spec. ")
     helpFrame:Show()
 end
 
