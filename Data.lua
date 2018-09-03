@@ -109,7 +109,7 @@ local data = {
     },
     -- 258 - Priest: Shadow
     [258] = {
-        {"Intellect > Haste > Critical Strike > Mastery > Versatility"},
+        {"Intellect > Haste = Critical Strike > Mastery > Versatility"},
     },
 
     -- 259 - Rogue: Assassination
@@ -163,7 +163,7 @@ local data = {
     },
     -- 73 - Warrior: Protection
     [73] = {
-        {"Haste > Versatility >= Mastery > Critical Strike > Strength"},
+        {"Haste > Versatility > Armor > Mastery > Critical Strike > Strength"},
     },
 }
 
