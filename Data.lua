@@ -44,13 +44,13 @@ local data = {
 
     -- 253 - Hunter: Beast Mastery
     [253] = {
-        {"Critical Strike > Mastery > Versatility > Haste", "Single Target"},
-        {"Mastery > Haste > Critical Strike > Versatility", "Multiple Target"},
+        {"Haste > Critical Strike > Mastery > Versatility", "Single-Target"},
+        {"Mastery > Haste > Critical Strike > Versatility", "Multi-Target"},
     },
     -- 254 - Hunter: Marksmanship
     [254] = {
-        {"Haste > Mastery > Versatility > Critical Strike", "Single Target"},
-        {"Mastery > Haste > Critical Strike > Versatility", "Multiple Target"},
+        {"Haste > Mastery > Versatility > Critical Strike", "Single-Target"},
+        {"Mastery > Haste > Critical Strike > Versatility", "Multi-Target"},
     },
     -- 255 - Hunter: Survival
     [255] = {
@@ -86,8 +86,7 @@ local data = {
 
     -- 65 - Paladin: Holy
     [65] = {
-        {"Intellect > Critical Strike > Haste > Versatility > Mastery", "With Avenging Crusader"},
-        {"Intellect > Critical Strike > Mastery > Haste > Versatility", "With Sanctified Wrath / Awakening"},
+        {"Intellect > Critical Strike > Mastery > Haste > Versatility"},
     },
     -- 66 - Paladin: Protection
     [66] = {
@@ -104,8 +103,8 @@ local data = {
     },
     -- 257 - Priest: Holy
     [257] = {
-        {"Intellect > Mastery > Critical Strike > Haste > Versatility", "Raids"},
-        {"Intellect > Haste > Critical Strike = Versatility > Mastery", "Dungeons"},
+        {"Intellect > Mastery = Critical Strike > Versatility > Haste", "Raids"},
+        {"Intellect > Critical Strike > Haste > Versatility > Mastery", "Dungeons"},
     },
     -- 258 - Priest: Shadow
     [258] = {
@@ -163,7 +162,7 @@ local data = {
     },
     -- 73 - Warrior: Protection
     [73] = {
-        {"Haste > Versatility > Armor > Mastery > Critical Strike > Strength"},
+        {"Haste > Armor > Versatility > Mastery > Critical Strike > Strength"},
     },
 }
 
