@@ -3,7 +3,7 @@ local addonName, IVSP = ...
 local data = {
     -- 250 - Death Knight: Blood
     [250] = {
-        {"Haste > Versatility > Mastery > Critical Strike"},
+        {"Versatility > Haste > Mastery > Critical Strike"},
     },
     -- 251 - Death Knight: Frost
     [251] = {
@@ -166,12 +166,23 @@ local data = {
     },
 }
 
-function IVSP:GetSPText(specID)
+function IVSP:GetSPText(specID, k)
     if not data[specID] then return end
 
     local selected = IVSP_Config["selected"][specID] or 1
-    if not data[specID][selected] then selected = 1 end -- data not exists
-    local text = data[specID][selected][1]
+    local text
+
+    if selected > #data[specID] then -- isCustom
+        if IVSP_Custom[specID] and IVSP_Custom[specID][selected - #data[specID]] then
+            text = IVSP_Custom[specID][selected - #data[specID]][1]
+        else -- data not exists
+            IVSP_Config["selected"][specID] = 1
+            selected = 1
+        end
+    else
+        text = data[specID][selected][1]
+    end
+
     -- localize
     text = string.gsub(text, "Haste", STAT_HASTE)
     text = string.gsub(text, "Critical Strike", STAT_CRITICAL_STRIKE)
@@ -187,10 +198,16 @@ function IVSP:GetSPText(specID)
 end
 
 function IVSP:GetSPDesc(specID)
-    if data[specID] and #data[specID] ~= 1 then
+    if data[specID] and (#data[specID] ~= 1 or (IVSP_Custom[specID] and #IVSP_Custom[specID] ~= 0)) then
         local desc = {}
         for _, t in pairs(data[specID]) do
-            table.insert(desc, t[2] or " ")
+            table.insert(desc, {t[2] or "General"})
+        end
+        -- load custom
+        if IVSP_Custom[specID] then
+            for k, t in pairs(IVSP_Custom[specID]) do
+                table.insert(desc, {t[2], k})
+            end
         end
         return desc
     end

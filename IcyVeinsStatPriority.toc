@@ -1,8 +1,8 @@
 ## Interface: 80000
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
-## Version: 2018-9-13
+## Version: 2018-10-8
 ## Author: fyhcslb
-## SavedVariables: IVSP_Config
+## SavedVariables: IVSP_Config, IVSP_Custom
 
 Data.lua
 Core.lua
