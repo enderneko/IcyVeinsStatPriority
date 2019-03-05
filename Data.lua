@@ -3,7 +3,7 @@ local addonName, IVSP = ...
 local data = {
     -- 250 - Death Knight: Blood
     [250] = {
-        {"Versatility > Haste > Mastery > Critical Strike"},
+        {"Item Level > Versatility > Haste > Critical Strike > Mastery"},
     },
     -- 251 - Death Knight: Frost
     [251] = {
@@ -16,41 +16,41 @@ local data = {
 
     -- 577 - Demon Hunter: Havoc
     [577] = {
-        {"Agility > Haste = Versatility > Critical Strike > Mastery"},
+        {"Versatility > Critical Strike = Haste > Agility > Mastery"},
     },
     -- 581 - Demon Hunter: Vengeance
     [581] = {
         {"Agility > Haste > Versatility > Mastery > Critical Strike"},
     },
 
-    --  Druid: Balance
+    -- 102 - Druid: Balance
     [102] = {
-        {"Intellect > Haste > Critical Strike > Versatility > Mastery"},
+        {"Intellect > Haste > Mastery > Critical Strike > Versatility"},
     },
-    -- Druid: Feral
+    -- 103 - Druid: Feral
     [103] = {
-        {"Agility > Haste > Critical Strike > Versatility > Mastery"},
+        {"Critical Strike > Mastery > Haste > Agility > Versatility"},
     },
-    -- Druid: Guardian
+    -- 104 - Druid: Guardian
     [104] = {
         {"Armor = Agility = Stamina > Mastery > Versatility > Haste > Critical Strike", "Survivability"},
-        {"Haste >= Critical Strike >= Versatility >= Mastery", "Damage Output"},
+        {"Haste ≥ Critical Strike ≥ Versatility ≥ Mastery", "Damage Output"},
     },
     -- Druid: Restoration
     [105] = {
-        {"Intellect > Haste = Critical Strike = Versatility > Mastery", "Raid Healing"},
-        {"Mastery = Haste > Intellect > Versatility > Critical Strike", "Dungeon Healing"},
+        {"Mastery > Haste = Critical Strike = Versatility > Intellect", "Raid Healing"},
+        {"Mastery = Haste > Versatility > Critical Strike > Intellect", "Dungeon Healing"},
     },
 
     -- 253 - Hunter: Beast Mastery
     [253] = {
-        {"Haste > Critical Strike > Mastery > Versatility", "Single-Target"},
+        {"Critical Strike > Haste > Mastery > Versatility", "Single-Target"},
         {"Mastery > Haste > Critical Strike > Versatility", "Multi-Target"},
     },
     -- 254 - Hunter: Marksmanship
     [254] = {
-        {"Haste > Mastery > Versatility > Critical Strike", "Single-Target"},
-        {"Mastery > Haste > Critical Strike > Versatility", "Multi-Target"},
+        {"Mastery > Haste > Critical Strike > Versatility", "Single-Target"},
+        {"Mastery > Critical Strike > Versatility > Haste", "Multi-Target"},
     },
     -- 255 - Hunter: Survival
     [255] = {
@@ -80,8 +80,8 @@ local data = {
     },
     -- 270 - Monk: Mistweaver
     [270] = {
-        {"Intellect > Critical Strike > Versatility > Haste > Mastery", "Raiding"},
-        {"Intellect > Haste = Mastery > Versatility > Critical Strike", "Mythic+"},
+        {"Intellect > Critical Strike > Mastery = Versatility > Haste", "Raiding"},
+        {"Intellect > Mastery ≥ Haste > Versatility > Critical Strike", "Mythic+"},
     },
 
     -- 65 - Paladin: Holy
@@ -90,7 +90,7 @@ local data = {
     },
     -- 66 - Paladin: Protection
     [66] = {
-        {"Haste > Mastery > Versatility > Critical Strike", "Survivability"},
+        {"Item Level > Haste > Mastery > Versatility > Critical Strike", "Survivability"},
     },
     -- 70 - Paladin: Retribution
     [70] = {
@@ -99,7 +99,7 @@ local data = {
 
     -- 256 - Priest: Discipline
     [256] = {
-        {"Intellect > Haste > Critical Strike > Mastery > Versatility"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery"},
     },
     -- 257 - Priest: Holy
     [257] = {
@@ -108,7 +108,7 @@ local data = {
     },
     -- 258 - Priest: Shadow
     [258] = {
-        {"Intellect > Haste = Critical Strike > Mastery > Versatility"},
+        {"Haste = Critical Strike > Intellect > Mastery > Versatility"},
     },
 
     -- 259 - Rogue: Assassination
@@ -117,22 +117,23 @@ local data = {
     },
     -- 260 - Rogue: Outlaw
     [260] = {
-        {"Agility > Haste > Versatility > Critical Strike > Mastery"},
+        {"Agility > Critical Strike > Haste > Versatility > Mastery"},
     },
     -- 261 - Rogue: Subtlety
     [261] = {
-        {"Critical Strike > Haste > Mastery > Versatility", "Single-Target"},
+        {"Versatility > Critical Strike > Mastery > Haste", "Single-Target"},
         {"Mastery > Critical Strike > Versatility > Haste", "Multi-Target"},
     },
 
     -- 262 - Shaman: Elemental
     [262] = {
-        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Single-Target"},
-        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Multi-Target"},
+        {"Intellect > Critical Strike > Haste > Versatility > Mastery"},
     },
     -- 263 - Shaman: Enhancement
     [263] = {
-        {"Agility > Haste > Critical Strike = Versatility > Mastery"},
+        {"Haste > Critical Strike = Versatility > Mastery > Agility", "Non Azerite Dependent"},
+        {"Mastery > Haste > Critical Strike = Versatility > Agility", "Primal Primer"},
+        {"Haste > Critical Strike > Mastery > Versatility > Agility", "Strength of Earth"},
     },
     -- 264 - Shaman: Restoration
     [264] = {
@@ -145,24 +146,25 @@ local data = {
     },
     -- 266 - Warlock: Demonology
     [266] = {
-        {"Intellect > Haste > Critical Strike ≈ Mastery > Versatility"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Single-Target"},
+        {"Mastery ≥ Critical Strike > Intellect > Versatility > Haste", "Explosive Potential"},
     },
     -- 267 - Warlock: Destruction
     [267] = {
-        {"Intellect > Haste > Critical Strike ≈ Mastery > Versatility"},
+        {"Mastery ≥ Haste > Critical Strike > Intellect > Versatility"},
     },
 
     -- 71 - Warrior: Arms
     [71] = {
-        {"Strength > Haste > Critical Strike > Mastery > Versatility"},
+        {"Weapon Damage > Haste > Critical Strike > Versatility > Mastery > Strength"},
     },
     -- 72 - Warrior: Fury
     [72] = {
-        {"Strength > Haste > Mastery > Versatility > Critical Strike"},
+        {"Weapon Damage > Critical Strike > Mastery > Haste > Versatility > Strength"},
     },
     -- 73 - Warrior: Protection
     [73] = {
-        {"Haste > Armor > Versatility > Mastery > Critical Strike > Strength"},
+        {"Item Level > Haste > Armor > Versatility > Mastery > Critical Strike > Strength"},
     },
 }
 
@@ -194,6 +196,7 @@ function IVSP:GetSPText(specID, k)
     text = string.gsub(text, "Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
     text = string.gsub(text, "Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
     text = string.gsub(text, "Weapon Damage", DAMAGE_TOOLTIP)
+    text = string.gsub(text, "Item Level", STAT_AVERAGE_ITEM_LEVEL)
     return text
 end
 

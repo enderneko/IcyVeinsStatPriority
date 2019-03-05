@@ -1,6 +1,6 @@
 ## Interface: 80000
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
-## Version: 2018-10-8
+## Version: 2019-3-4
 ## Author: fyhcslb
 ## SavedVariables: IVSP_Config, IVSP_Custom
 
