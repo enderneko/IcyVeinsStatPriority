@@ -72,7 +72,7 @@ local data = {
 
     -- 268 - Monk: Brewmaster
     [268] = {
-        {"Agility > Critical Strike = Versatility = Mastery > Haste"},
+        {"Agility > Mastery > Critical Strike = Versatility > Haste"},
     },
     -- 269 - Monk: Windwalker
     [269] = {
@@ -127,7 +127,7 @@ local data = {
 
     -- 262 - Shaman: Elemental
     [262] = {
-        {"Intellect > Critical Strike > Haste > Versatility > Mastery"},
+        {"Intellect > Versatility > Critical Strike > Haste > Mastery"},
     },
     -- 263 - Shaman: Enhancement
     [263] = {
