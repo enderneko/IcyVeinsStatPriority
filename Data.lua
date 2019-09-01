@@ -44,7 +44,7 @@ local data = {
 
     -- 253 - Hunter: Beast Mastery
     [253] = {
-        {"Critical Strike > Haste = Versatility, Mastery"},
+        {"Critical Strike > Haste = Versatility > Mastery"},
     },
     -- 254 - Hunter: Marksmanship
     [254] = {
