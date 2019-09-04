@@ -66,7 +66,7 @@ local data = {
     },
     -- 64 - Mage: Frost
     [64] = {
-        {"Mastery > Critical Strike (to 33.34%) > Haste > Versatility > Intellect > (Critical Strike from 33.34)"},
+        {"Mastery > Critical Strike (to 33.34%) > Haste > Versatility > Intellect"},
     },
 
     -- 268 - Monk: Brewmaster
