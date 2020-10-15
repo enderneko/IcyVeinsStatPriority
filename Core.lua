@@ -4,7 +4,7 @@ local currentSpecID
 -----------------------------------------------
 -- frame (button)
 -----------------------------------------------
-local frame = CreateFrame("Button", "IcyVeinsStatPriorityFrame", CharacterFrame)
+local frame = CreateFrame("Button", "IcyVeinsStatPriorityFrame", CharacterFrame, "BackdropTemplate")
 frame:SetPoint("BOTTOMRIGHT", CharacterFrame, "TOPRIGHT", 0, 1)
 frame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
 frame:SetPushedTextOffset(0, -1)
@@ -43,7 +43,7 @@ end
 -----------------------------------------------
 -- frame (help)
 -----------------------------------------------
-local helpFrame = CreateFrame("Frame", "IcyVeinsStatPriorityHelpFrame", frame)
+local helpFrame = CreateFrame("Frame", "IcyVeinsStatPriorityHelpFrame", frame, "BackdropTemplate")
 helpFrame:Hide()
 helpFrame:SetSize(250, 50)
 helpFrame:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
@@ -75,7 +75,7 @@ local items = {}
 local addBtn, customFrame
 
 local function CreateButton(parent, backdropColor, backdropBorderColor, width, height, text)
-    local b = CreateFrame("Button", nil, parent) 
+    local b = CreateFrame("Button", nil, parent, "BackdropTemplate") 
     b:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
     b:SetPushedTextOffset(0, -1)
     b:SetBackdropColor(unpack(backdropColor))
@@ -129,10 +129,12 @@ local function ShowColorPicker(colorTable, changedCallback)
     ColorPickerFrame:SetColorRGB(r, g, b)
     ColorPickerFrame:Hide() -- Need to run the OnShow handler.
     ColorPickerFrame:Show()
+    ColorPickerFrame:ClearAllPoints()
+    ColorPickerFrame:SetPoint("CENTER", UIParent)
 end
 
 local function CreateColorPicker(name, colorTable, tooltip)
-    local picker = CreateFrame("Button", name, frame)
+    local picker = CreateFrame("Button", name, frame, "BackdropTemplate")
     picker:SetSize(15, 15)
     picker:Hide()
     picker:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
@@ -218,7 +220,7 @@ local function ShowCustomFrame(sp, desc, k, isSelected)
 
         local height = select(2, IVSP_FONT:GetFont()) + 7
 
-        customFrame.eb1 = CreateFrame("EditBox", nil, customFrame)
+        customFrame.eb1 = CreateFrame("EditBox", nil, customFrame, "BackdropTemplate")
         customFrame.eb1:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
         customFrame.eb1:SetBackdropColor(.1, .1, .1, .9)
         customFrame.eb1:SetBackdropBorderColor(0, 0, 0, 1)
@@ -236,7 +238,7 @@ local function ShowCustomFrame(sp, desc, k, isSelected)
         customFrame.eb1:SetScript("OnEditFocusGained", function() customFrame.eb1:HighlightText() end)
         customFrame.eb1:SetScript("OnEditFocusLost", function() customFrame.eb1:HighlightText(0, 0) end)
         
-        customFrame.eb2 = CreateFrame("EditBox", nil, customFrame)
+        customFrame.eb2 = CreateFrame("EditBox", nil, customFrame, "BackdropTemplate")
         customFrame.eb2:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
         customFrame.eb2:SetBackdropColor(.1, .1, .1, .9)
         customFrame.eb2:SetBackdropBorderColor(0, 0, 0, 1)
