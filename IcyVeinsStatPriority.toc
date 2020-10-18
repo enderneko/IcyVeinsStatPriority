@@ -1,4 +1,4 @@
-## Interface: 90000
+## Interface: 90001
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
 ## Version: 2020-10-15
 ## Author: fyhcslb
