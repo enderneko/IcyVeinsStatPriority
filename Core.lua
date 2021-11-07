@@ -472,16 +472,35 @@ frame:SetScript("OnClick", function()
         borderColorPicker:Show()
     end
 
-    if fontColorPicker:IsShown() then
-        fontColorPicker:Hide()
-    else
-        fontColorPicker:Show()
-    end
+-----------------------------------------------
+-- frame scripts
+-----------------------------------------------
+local isItemsShown, isListShown
+frame:SetScript("OnHide", function()
+    isItemsShown = false
+end)
 
-    if addBtn:IsShown() then
-        addBtn:Hide()
-    else
-        addBtn:Show()
+frame:SetScript("OnClick", function(self, button, down)
+    if button == "LeftButton" then
+        if isItemsShown then
+            isItemsShown = false
+            for _, i in pairs(items) do
+                i:Hide()
+            end
+            bgColorPicker:Hide()
+            borderColorPicker:Hide()
+            fontColorPicker:Hide()
+            addBtn:Hide()
+        else
+            isItemsShown = true
+            for _, i in pairs(items) do
+                i:Show()
+            end
+            bgColorPicker:Show()
+            borderColorPicker:Show()
+            fontColorPicker:Show()
+            addBtn:Show()
+        end
     end
 
     -- hide help on click
