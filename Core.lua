@@ -42,6 +42,13 @@ local function SetText(text)
 end
 
 -----------------------------------------------
+-- version text
+-----------------------------------------------
+local versionText = frame:CreateFontString(nil, "OVERLAY", "IVSP_FONT")
+versionText:SetPoint("BOTTOMLEFT", frame, "TOPRIGHT", 5, 2)
+versionText:Hide()
+
+-----------------------------------------------
 -- frame (help)
 -----------------------------------------------
 local helpFrame = CreateFrame("Frame", "IcyVeinsStatPriorityHelpFrame", frame, "BackdropTemplate")
@@ -576,6 +583,7 @@ end
 -----------------------------------------------
 frame:SetScript("OnHide", function()
     isItemsShown = false
+    versionText:Hide()
 end)
 
 frame:SetScript("OnClick", function(self, button, down)
@@ -590,6 +598,7 @@ frame:SetScript("OnClick", function(self, button, down)
             borderColorPicker:Hide()
             fontColorPicker:Hide()
             addBtn:Hide()
+            versionText:Hide()
         else
             isItemsShown = true
             for _, i in pairs(items) do
@@ -599,10 +608,12 @@ frame:SetScript("OnClick", function(self, button, down)
             borderColorPicker:Show()
             fontColorPicker:Show()
             addBtn:Show()
+            versionText:Show()
         end
     elseif button == "RightButton" then
         if classFrame:IsShown() then
             classFrame:Hide()
+            versionText:Hide()
         else
             isItemsShown = false
             for _, i in pairs(items) do
@@ -615,6 +626,7 @@ frame:SetScript("OnClick", function(self, button, down)
 
             IVSP:LoadClasses()
             classFrame:Show()
+            versionText:Show()
         end
     end
 
@@ -655,6 +667,8 @@ function frame:ADDON_LOADED(arg1)
         bgColorPicker:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
         borderColorPicker:SetBackdropColor(unpack(IVSP_Config["borderColor"]))
         fontColorPicker:SetBackdropColor(unpack(IVSP_Config["fontColor"]))
+
+        versionText:SetText("Version: " .. GetAddOnMetadata(addonName, "version"))
     end
 end
 
