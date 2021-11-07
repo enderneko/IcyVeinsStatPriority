@@ -76,7 +76,7 @@ local data = {
     },
     -- 269 - Monk: Windwalker -- https://www.icy-veins.com/wow/windwalker-monk-pve-dps-stat-priority
     [269] = {
-        {"Weapon Damage > Agility > Versatility > Mastery > Critical Strike > Haste"},
+        {"Weapon Damage > Agility > Versatility > Critical Strike > Mastery > Haste"},
     },
     -- 270 - Monk: Mistweaver -- https://www.icy-veins.com/wow/mistweaver-monk-pve-healing-stat-priority
     [270] = {
@@ -114,13 +114,12 @@ local data = {
 
     -- 259 - Rogue: Assassination -- https://www.icy-veins.com/wow/assassination-rogue-pve-dps-stat-priority
     [259] = {
-        {"Haste > Critical Strike > Versatility > Mastery", "Raid"},
+        {"Critical Strike > Haste > Versatility > Mastery", "Raid"},
         {"Critical Strike > Mastery > Haste > Versatility", "Mythic+"},
     },
     -- 260 - Rogue: Outlaw -- https://www.icy-veins.com/wow/outlaw-rogue-pve-dps-stat-priority
     [260] = {
-        {"Versatility > Haste > Critical Strike > Mastery", "Raid"},
-        {"Versatility > Critical Strike > Haste > Mastery", "Mythic+"},
+        {"Versatility > Critical Strike > Haste > Mastery"},
     },
     -- 261 - Rogue: Subtlety -- https://www.icy-veins.com/wow/subtlety-rogue-pve-dps-stat-priority
     [261] = {
