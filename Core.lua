@@ -1,6 +1,6 @@
 local addonName, IVSP = ...
 
-local currentSpecID
+local currentSpecID, isItemsShown
 -----------------------------------------------
 -- frame (button)
 -----------------------------------------------
@@ -8,6 +8,7 @@ local frame = CreateFrame("Button", "IcyVeinsStatPriorityFrame", CharacterFrame,
 frame:SetPoint("BOTTOMRIGHT", CharacterFrame, "TOPRIGHT", 0, 1)
 frame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
 frame:SetPushedTextOffset(0, -1)
+frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
 -- text
 CreateFont("IVSP_FONT")
@@ -45,19 +46,20 @@ end
 -----------------------------------------------
 local helpFrame = CreateFrame("Frame", "IcyVeinsStatPriorityHelpFrame", frame, "BackdropTemplate")
 helpFrame:Hide()
-helpFrame:SetSize(250, 50)
+helpFrame:SetSize(250, 70)
 helpFrame:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
 helpFrame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
 
 local helpFrameText = helpFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT")
-helpFrameText:SetPoint("TOPLEFT", 5, -5)
-helpFrameText:SetPoint("BOTTOMRIGHT", -5, 5)
+helpFrameText:SetPoint("TOPLEFT", 10, -5)
+helpFrameText:SetPoint("BOTTOMRIGHT", -10, 5)
+helpFrameText:SetJustifyH("LEFT")
 helpFrameText:SetSpacing(5)
 
 local function SetHelpFrame(bgColor, borderColor)
     helpFrame:SetBackdropColor(unpack(bgColor))
     helpFrame:SetBackdropBorderColor(unpack(borderColor))
-    helpFrameText:SetText("<- Click on IVSP to change its color.\nYou can add custom stat priority here.")
+    helpFrameText:SetText("|cff69CCF0Left-Click|r on IVSP to config it\n|cff69CCF0Right-Click|r to view all stat priorities\nSlash command: |cff69CCF0/ivsp|r")
     helpFrame:Show()
 end
 
@@ -378,6 +380,8 @@ local function AddItem(text, k)
     item:SetScript("OnHide", function() item:Hide() end)
 
     item:SetScript("OnClick", function()
+        isItemsShown = false
+
         bgColorPicker:Hide()
         borderColorPicker:Hide()
         fontColorPicker:Hide()
@@ -449,39 +453,134 @@ function IVSP:LoadList()
 end
 
 -----------------------------------------------
--- frame OnClick
+-- class frame
 -----------------------------------------------
-frame:SetScript("OnClick", function()
-    for _, i in pairs(items) do
-        if i:IsShown() then
-            i:Hide()
-        else
-            i:Show()
+local classFrame = CreateFrame("Frame", "IcyVeinsStatPriorityClassFrame", CharacterFrame)
+classFrame:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
+classFrame:SetSize(100, 300)
+classFrame:Hide()
+
+local specFrame = CreateFrame("Frame", "IcyVeinsStatPrioritySpecFrame", classFrame, "BackdropTemplate")
+specFrame:SetPoint("TOPLEFT", classFrame, "TOPRIGHT", 1, 0)
+specFrame:SetSize(300, 100)
+specFrame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
+specFrame:SetBackdropColor(.1, .1, .1, .9)
+specFrame:Hide()
+
+local content = CreateFrame("SimpleHTML", nil, specFrame)
+content:SetPoint("TOP", 0, -5)
+content:SetWidth(specFrame:GetWidth() - 10)
+content:SetSpacing("p", 5)
+content:SetFontObject("p", "IVSP_FONT")
+
+content:SetScript("OnHyperlinkClick", function(self, link, text, button)
+    local editBox = ChatEdit_ChooseBoxForSend()
+    ChatEdit_ActivateChat(editBox)
+    editBox:SetText("[" .. link .. "] " .. text)
+end)
+
+local classLoaded
+classFrame:SetScript("OnHide", function()
+    classFrame:Hide()
+    specFrame:Hide()
+    classLoaded = 0
+end)
+
+-----------------------------------------------
+-- load classes
+-----------------------------------------------
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local classBtns = {}
+function IVSP:LoadClasses()
+    if not classLoaded then
+        classLoaded = 0
+        local textWidth = 0
+
+        for classID = 1, 12 do
+            local className, classFile = GetClassInfo(classID)
+            local r, g, b = RAID_CLASS_COLORS[classFile].r, RAID_CLASS_COLORS[classFile].g, RAID_CLASS_COLORS[classFile].b
+
+            classBtns[classID] = CreateButton(classFrame, {.1, .1, .1, .9}, {r, g, b, 1}, 
+                select(2, IVSP_FONT:GetFont()) + 7, select(2, IVSP_FONT:GetFont()) + 7, 
+                "|c" .. RAID_CLASS_COLORS[classFile].colorStr .. className)
+            textWidth = math.max(textWidth, classBtns[classID]:GetFontString():GetStringWidth())
+            
+            if classID == 1 then
+                classBtns[classID]:SetPoint("TOPLEFT")
+            else
+                classBtns[classID]:SetPoint("TOP", classBtns[classID - 1], "BOTTOM", 0, -1)
+            end
+
+            -- specs
+            for specIndex = 1, 4 do
+                local specID = GetSpecializationInfoForClassID(classID, specIndex)
+                if specID then
+                    if not classBtns[classID]["specs"] then classBtns[classID]["specs"] = {} end
+                    tinsert(classBtns[classID]["specs"], specID)
+                end
+            end
+
+            -- highlight
+            classBtns[classID].highlight = classBtns[classID]:CreateTexture(nil, "ARTWORK")
+            classBtns[classID].highlight:SetPoint("TOPRIGHT")
+            classBtns[classID].highlight:SetPoint("BOTTOMLEFT", classBtns[classID], "BOTTOM")
+            classBtns[classID].highlight:SetTexture("Interface\\Buttons\\WHITE8x8")
+            classBtns[classID].highlight:SetGradientAlpha("HORIZONTAL", r, g, b, 0, r, g, b, .77)
+            classBtns[classID].highlight:Hide()
+
+            classBtns[classID]:SetScript("OnHide", function(self)
+                self.highlight:Hide()
+            end)
+
+            -- onclick
+            classBtns[classID]:SetScript("OnClick", function(self)
+                if classLoaded == classID then return end
+                classLoaded = classID
+
+                for i = 1, 12 do
+                    classBtns[i].highlight:Hide()
+                end
+                self.highlight:Show()
+
+                -- load
+                local details = ""
+                for _, specID in pairs(classBtns[classID]["specs"]) do
+                    local _, name = GetSpecializationInfoByID(specID)
+                    details = details .. "<p>[" .. name .. "]</p>"
+
+                    for _, sp in pairs(IVSP:GetSP(specID)) do
+                        details = details .. "<p><a href=\"" .. className .. " - " .. name .. "\">" .. sp .. "</a></p>"
+                    end
+                    details = details .. "<br/>"
+                end
+                details = details .. "<p>|cFFB2B2B2READ ONLY. Click on stat priority text to send</p>"
+                content:SetText("<html><body>" .. details .. "</body></html>")
+                
+                content:SetHeight(content:GetContentHeight())
+                specFrame:SetHeight(content:GetContentHeight() + 10)
+
+                specFrame:SetBackdropBorderColor(r, g, b)
+                specFrame:Show()
+            end)
+        end
+
+        classFrame:SetWidth(textWidth + 20)
+        for _, b in pairs(classBtns) do
+            b:SetWidth(textWidth + 20)
         end
     end
-
-    if bgColorPicker:IsShown() then
-        bgColorPicker:Hide()
-    else
-        bgColorPicker:Show()
-    end
-
-    if borderColorPicker:IsShown() then
-        borderColorPicker:Hide()
-    else
-        borderColorPicker:Show()
-    end
+end
 
 -----------------------------------------------
 -- frame scripts
 -----------------------------------------------
-local isItemsShown, isListShown
 frame:SetScript("OnHide", function()
     isItemsShown = false
 end)
 
 frame:SetScript("OnClick", function(self, button, down)
     if button == "LeftButton" then
+        classFrame:Hide()
         if isItemsShown then
             isItemsShown = false
             for _, i in pairs(items) do
@@ -500,6 +599,22 @@ frame:SetScript("OnClick", function(self, button, down)
             borderColorPicker:Show()
             fontColorPicker:Show()
             addBtn:Show()
+        end
+    elseif button == "RightButton" then
+        if classFrame:IsShown() then
+            classFrame:Hide()
+        else
+            isItemsShown = false
+            for _, i in pairs(items) do
+                i:Hide()
+            end
+            bgColorPicker:Hide()
+            borderColorPicker:Hide()
+            fontColorPicker:Hide()
+            addBtn:Hide()
+
+            IVSP:LoadClasses()
+            classFrame:Show()
         end
     end
 

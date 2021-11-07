@@ -171,7 +171,23 @@ local data = {
     },
 }
 
-function IVSP:GetSPText(specID, k)
+local function LocalizeSP(text)
+    -- localize
+    text = string.gsub(text, "Haste", STAT_HASTE)
+    text = string.gsub(text, "Critical Strike", STAT_CRITICAL_STRIKE)
+    text = string.gsub(text, "Mastery", STAT_MASTERY)
+    text = string.gsub(text, "Versatility", STAT_VERSATILITY)
+    text = string.gsub(text, "Armor", STAT_ARMOR)
+    text = string.gsub(text, "Stamina", ITEM_MOD_STAMINA_SHORT)
+    text = string.gsub(text, "Strength", SPEC_FRAME_PRIMARY_STAT_STRENGTH)
+    text = string.gsub(text, "Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
+    text = string.gsub(text, "Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
+    text = string.gsub(text, "Weapon Damage", DAMAGE_TOOLTIP)
+    text = string.gsub(text, "Item Level", STAT_AVERAGE_ITEM_LEVEL)
+    return text
+end
+
+function IVSP:GetSPText(specID)
     if not data[specID] then return end
 
     local selected = IVSP_Config["selected"][specID] or 1
@@ -188,18 +204,7 @@ function IVSP:GetSPText(specID, k)
         text = data[specID][selected][1]
     end
 
-    -- localize
-    text = string.gsub(text, "Haste", STAT_HASTE)
-    text = string.gsub(text, "Critical Strike", STAT_CRITICAL_STRIKE)
-    text = string.gsub(text, "Mastery", STAT_MASTERY)
-    text = string.gsub(text, "Versatility", STAT_VERSATILITY)
-    text = string.gsub(text, "Armor", STAT_ARMOR)
-    text = string.gsub(text, "Stamina", ITEM_MOD_STAMINA_SHORT)
-    text = string.gsub(text, "Strength", SPEC_FRAME_PRIMARY_STAT_STRENGTH)
-    text = string.gsub(text, "Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
-    text = string.gsub(text, "Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
-    text = string.gsub(text, "Weapon Damage", DAMAGE_TOOLTIP)
-    text = string.gsub(text, "Item Level", STAT_AVERAGE_ITEM_LEVEL)
+    text = LocalizeSP(text)
     return text
 end
 
@@ -217,4 +222,22 @@ function IVSP:GetSPDesc(specID)
         end
         return desc
     end
+end
+
+function IVSP:GetSP(specID)
+    local sp = {}
+
+    -- load built-in
+    for _, t in pairs(data[specID]) do
+        tinsert(sp, (t[2] or "General") .. ": " .. LocalizeSP(t[1]))
+    end
+
+    -- load custom
+    if IVSP_Custom[specID] then
+        for _, t in pairs(IVSP_Custom[specID]) do
+            tinsert(sp, (t[2] or "General") .. ": " .. LocalizeSP(t[1]))
+        end
+    end
+
+    return sp
 end
