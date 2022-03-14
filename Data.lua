@@ -1,4 +1,5 @@
 local addonName, IVSP = ...
+local L = IVSP.L
 
 local data = {
     -- 250 - Death Knight: Blood -- https://www.icy-veins.com/wow/blood-death-knight-pve-tank-stat-priority
@@ -39,17 +40,18 @@ local data = {
     },
     -- Druid: Restoration -- https://www.icy-veins.com/wow/restoration-druid-pve-healing-stat-priority
     [105] = {
-        {"Intellect > Haste > Mastery = Critical Strike = Versatility", "Raid Healing"},
+        {"Intellect > Haste = Mastery > Critical Strike = Versatility", "Raid Healing"},
         {"Intellect > Mastery = Haste > Versatility > Critical Strike", "Dungeon Healing"},
+        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Dungeon Damage Dealing"},
     },
 
     -- 253 - Hunter: Beast Mastery -- https://www.icy-veins.com/wow/beast-mastery-hunter-pve-dps-stat-priority
     [253] = {
-        {"Critical Strike > Haste = Versatility > Mastery"},
+        {"Critical Strike > Versatility > Haste > Mastery"},
     },
     -- 254 - Hunter: Marksmanship -- https://www.icy-veins.com/wow/marksmanship-hunter-pve-dps-stat-priority
     [254] = {
-        {"Mastery > Critical Strike > Versatility > Haste"},
+        {"Mastery = Critical Strike > Versatility > Haste"},
     },
     -- 255 - Hunter: Survival -- https://www.icy-veins.com/wow/survival-hunter-pve-dps-stat-priority
     [255] = {
@@ -91,11 +93,11 @@ local data = {
     },
     -- 66 - Paladin: Protection -- https://www.icy-veins.com/wow/protection-paladin-pve-tank-stat-priority
     [66] = {
-        {"Haste > Mastery = Versatility > Critical Strike", "Defensive"},
+        {"Haste ≈ Mastery ≈ Versatility > Critical Strike", "Defensive"},
     },
     -- 70 - Paladin: Retribution -- https://www.icy-veins.com/wow/retribution-paladin-pve-dps-stat-priority
     [70] = {
-        {"Strength > Critical Strike ≈ Versatility ≈ Mastery ≈ Haste"},
+        {"Strength > Haste > Mastery ≈ Versatility ≈ Critical Strike"},
     },
 
     -- 256 - Priest: Discipline -- https://www.icy-veins.com/wow/discipline-priest-pve-healing-stat-priority
@@ -105,7 +107,7 @@ local data = {
     -- 257 - Priest: Holy -- https://www.icy-veins.com/wow/holy-priest-pve-healing-stat-priority
     [257] = {
         {"Intellect > Mastery = Critical Strike > Versatility > Haste", "Raids"},
-        {"Intellect > Critical Strike > Haste > Versatility > Mastery", "Dungeons"},
+        {"Intellect > Critical Strike = Haste > Versatility > Mastery", "Dungeons"},
     },
     -- 258 - Priest: Shadow -- https://www.icy-veins.com/wow/shadow-priest-pve-dps-stat-priority
     [258] = {
@@ -114,7 +116,7 @@ local data = {
 
     -- 259 - Rogue: Assassination -- https://www.icy-veins.com/wow/assassination-rogue-pve-dps-stat-priority
     [259] = {
-        {"Critical Strike > Haste > Versatility > Mastery", "Raid"},
+        {"Critical Strike > Haste > Mastery > Versatility", "Raid"},
         {"Critical Strike > Mastery > Haste > Versatility", "Mythic+"},
     },
     -- 260 - Rogue: Outlaw -- https://www.icy-veins.com/wow/outlaw-rogue-pve-dps-stat-priority
@@ -133,7 +135,7 @@ local data = {
     },
     -- 263 - Shaman: Enhancement -- https://www.icy-veins.com/wow/enhancement-shaman-pve-dps-stat-priority
     [263] = {
-        {"Agility > Haste > Critical Strike = Versatility > Mastery"},
+        {"Agility > Haste > Mastery > Versatility > Critical Strike"},
     },
     -- 264 - Shaman: Restoration -- https://www.icy-veins.com/wow/restoration-shaman-pve-healing-stat-priority
     [264] = {
@@ -148,16 +150,18 @@ local data = {
     -- 266 - Warlock: Demonology -- https://www.icy-veins.com/wow/demonology-warlock-pve-dps-stat-priority
     [266] = {
         {"Intellect > Haste > Mastery > Critical Strike ≈ Versatility", "Single-Target"},
-        {"Intellect > Haste = Mastery > Critical Strike ≈ Versatility", "Multi-Target"},
+        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Sacrificed Souls"},
+        {"Intellect > Mastery > Haste > Critical Strike ≈ Versatility", "Multi-Target"},
     },
     -- 267 - Warlock: Destruction -- https://www.icy-veins.com/wow/destruction-warlock-pve-dps-stat-priority
     [267] = {
-        {"Intellect > Haste ≥ Mastery > Critical Strike > Versatility"},
+        {"Intellect > Haste ≥ Mastery > Critical Strike > Versatility", "Without Tier Set"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "With Tier Set"},
     },
 
     -- 71 - Warrior: Arms -- https://www.icy-veins.com/wow/arms-warrior-pve-dps-stat-priority
     [71] = {
-        {"Strength > Critical Strike > Mastery > Versatility > Haste"},
+        {"Strength > Critical Strike > Haste > Mastery > Versatility"},
     },
     -- 72 - Warrior: Fury -- https://www.icy-veins.com/wow/fury-warrior-pve-dps-stat-priority
     [72] = {
@@ -187,7 +191,9 @@ local function LocalizeSP(text)
 end
 
 function IVSP:GetSPText(specID)
-    if not data[specID] then return end
+    if not data[specID] then
+        return L["No Specialization Selected"]
+    end
 
     local selected = IVSP_Config["selected"][specID] or 1
     local text
@@ -208,19 +214,19 @@ function IVSP:GetSPText(specID)
 end
 
 function IVSP:GetSPDesc(specID)
-    if data[specID] and (#data[specID] ~= 1 or (IVSP_Custom[specID] and #IVSP_Custom[specID] ~= 0)) then
-        local desc = {}
+    local desc = {}
+    if data[specID] then
         for _, t in pairs(data[specID]) do
-            table.insert(desc, {t[2] or "General"})
+            table.insert(desc, {t[2] or L["General"]})
         end
-        -- load custom
-        if IVSP_Custom[specID] then
-            for k, t in pairs(IVSP_Custom[specID]) do
-                table.insert(desc, {t[2], k})
-            end
-        end
-        return desc
     end
+    -- load custom
+    if IVSP_Custom[specID] then
+        for k, t in pairs(IVSP_Custom[specID]) do
+            table.insert(desc, {t[2], k})
+        end
+    end
+    return desc
 end
 
 function IVSP:GetSP(specID)
@@ -228,13 +234,13 @@ function IVSP:GetSP(specID)
 
     -- load built-in
     for _, t in pairs(data[specID]) do
-        tinsert(sp, (t[2] or "General") .. ": " .. LocalizeSP(t[1]))
+        tinsert(sp, (t[2] or L["General"]) .. ": " .. LocalizeSP(t[1]))
     end
 
     -- load custom
     if IVSP_Custom[specID] then
         for _, t in pairs(IVSP_Custom[specID]) do
-            tinsert(sp, (t[2] or "General") .. ": " .. LocalizeSP(t[1]))
+            tinsert(sp, (t[2] or L["General"]) .. ": " .. LocalizeSP(t[1]))
         end
     end
 

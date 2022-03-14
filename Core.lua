@@ -1,6 +1,70 @@
 local addonName, IVSP = ...
+local L = IVSP.L
 
 local currentSpecID, isItemsShown
+local items = {}
+local addBtn, customFrame
+-----------------------------------------------
+-- font
+-----------------------------------------------
+CreateFont("IVSP_FONT")
+IVSP_FONT:SetShadowColor(0, 0, 0)
+IVSP_FONT:SetShadowOffset(1, -1)
+IVSP_FONT:SetJustifyH("CENTER")
+IVSP_FONT:SetJustifyV("MIDDLE")
+
+CreateFont("IVSP_FONT_P")
+IVSP_FONT_P:SetShadowColor(0, 0, 0)
+IVSP_FONT_P:SetShadowOffset(1, -1)
+IVSP_FONT_P:SetJustifyH("CENTER")
+IVSP_FONT_P:SetJustifyV("LEFT")
+
+-----------------------------------------------
+-- widgets
+-----------------------------------------------
+local function CreateButton(parent, backdropColor, backdropBorderColor, width, height, text)
+    local b = CreateFrame("Button", nil, parent, "BackdropTemplate") 
+    b:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
+    b:SetPushedTextOffset(0, -1)
+    b:SetBackdropColor(unpack(backdropColor))
+    b:SetBackdropBorderColor(unpack(backdropBorderColor))
+    b:SetNormalFontObject(IVSP_FONT)
+    b:SetWidth(width)
+    b:SetHeight(height)
+    b:SetText(text)
+
+    -- texture
+    function b:SetTexture(tex, texSize, point)
+        b.tex = b:CreateTexture(nil, "ARTWORK")
+        b.tex:SetPoint(unpack(point))
+        b.tex:SetSize(unpack(texSize))
+        b.tex:SetTexture(tex)
+        -- push effect
+        b.onMouseDown = function()
+            b.tex:ClearAllPoints()
+            b.tex:SetPoint(point[1], point[2], point[3]-1)
+        end
+        b.onMouseUp = function()
+            b.tex:ClearAllPoints()
+            b.tex:SetPoint(unpack(point))
+        end
+        b:SetScript("OnMouseDown", b.onMouseDown)
+        b:SetScript("OnMouseUp", b.onMouseUp)
+        -- enable / disable
+        b:HookScript("OnEnable", function()
+            b.tex:SetVertexColor(1, 1, 1)
+            b:SetScript("OnMouseDown", b.onMouseDown)
+            b:SetScript("OnMouseUp", b.onMouseUp)
+        end)
+        b:HookScript("OnDisable", function()
+            b.tex:SetVertexColor(.4, .4, .4)
+            b:SetScript("OnMouseDown", nil)
+            b:SetScript("OnMouseUp", nil)
+        end)
+    end
+    return b
+end
+
 -----------------------------------------------
 -- frame (button)
 -----------------------------------------------
@@ -10,17 +74,12 @@ frame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interfac
 frame:SetPushedTextOffset(0, -1)
 frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
--- text
-CreateFont("IVSP_FONT")
-IVSP_FONT:SetShadowColor(0, 0, 0)
-IVSP_FONT:SetShadowOffset(1, -1)
-IVSP_FONT:SetJustifyH("CENTER")
-IVSP_FONT:SetJustifyV("MIDDLE")
-
 -- function
 local function SetFrame(bgColor, borderColor, fontColor, fontSize, show)
     IVSP_FONT:SetFont(GameFontNormal:GetFont(), fontSize)
     IVSP_FONT:SetTextColor(unpack(fontColor))
+
+    IVSP_FONT_P:SetFont(GameFontNormal:GetFont(), fontSize)
     
     frame:SetNormalFontObject(IVSP_FONT)
 
@@ -57,43 +116,32 @@ helpFrame:SetSize(250, 70)
 helpFrame:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
 helpFrame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
 
-local helpFrameText = helpFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT")
-helpFrameText:SetPoint("TOPLEFT", 10, -5)
-helpFrameText:SetPoint("BOTTOMRIGHT", -10, 5)
-helpFrameText:SetJustifyH("LEFT")
-helpFrameText:SetSpacing(5)
-
-local function SetHelpFrame(bgColor, borderColor)
-    helpFrame:SetBackdropColor(unpack(bgColor))
-    helpFrame:SetBackdropBorderColor(unpack(borderColor))
-    helpFrameText:SetText("|cff69CCF0Left-Click|r on IVSP to config it\n|cff69CCF0Right-Click|r to view all stat priorities\nSlash command: |cff69CCF0/ivsp|r")
-    helpFrame:Show()
-end
-
-helpFrame:SetScript("OnShow", function()
-    if IVSP_Config["helpViewed"] then
-        helpFrame:Hide()
-    end
+local gotItBtn = CreateButton(helpFrame, {0.41, 0.8, 0.94, 1}, {0, 0, 0, 1}, 100, 20, L["Got it!"])
+gotItBtn:SetPoint("BOTTOMLEFT", 5, 5)
+gotItBtn:SetPoint("BOTTOMRIGHT", -5, 5)
+gotItBtn:SetScript("OnClick", function()
+    helpFrame:Hide()
     IVSP_Config["helpViewed"] = true
 end)
 
------------------------------------------------
--- widgets
------------------------------------------------
-local items = {}
-local addBtn, customFrame
+-- NOTE: used to update width
+local helpFrameHiddenText = helpFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT_P")
+helpFrameHiddenText:Hide()
 
-local function CreateButton(parent, backdropColor, backdropBorderColor, width, height, text)
-    local b = CreateFrame("Button", nil, parent, "BackdropTemplate") 
-    b:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
-    b:SetPushedTextOffset(0, -1)
-    b:SetBackdropColor(unpack(backdropColor))
-    b:SetBackdropBorderColor(unpack(backdropBorderColor))
-    b:SetNormalFontObject(IVSP_FONT)
-    b:SetWidth(width)
-    b:SetHeight(height)
-    b:SetText(text)
-    return b
+local helpFrameText = helpFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT_P")
+helpFrameText:SetPoint("TOPLEFT", 5, -5)
+-- helpFrameText:SetPoint("BOTTOMRIGHT", -5, 5)
+helpFrameText:SetJustifyH("LEFT")
+helpFrameText:SetSpacing(5)
+
+local function ShowHelpFrame(bgColor, borderColor)
+    helpFrame:SetBackdropColor(unpack(bgColor))
+    helpFrame:SetBackdropBorderColor(unpack(borderColor))
+    helpFrameText:SetText(L["HELP"])
+    -- resize
+    helpFrameHiddenText:SetText(string.match(helpFrameText:GetText(), ".+\n(.+)\n.+"))
+    helpFrame:SetSize(helpFrameHiddenText:GetStringWidth() + 10, helpFrameHiddenText:GetStringHeight() * 3 + 45)
+    helpFrame:Show()
 end
 
 -----------------------------------------------
@@ -180,7 +228,7 @@ local function CreateColorPicker(name, colorTable, tooltip)
     picker:SetScript("OnEnter", function()
         GameTooltip:SetOwner(picker, "ANCHOR_TOP")
         GameTooltip:AddLine(tooltip)
-        GameTooltip:AddLine("|cffffffffRight-click to reset.")
+        GameTooltip:AddLine("|cffffffff"..L["Right-Click to reset"])
         GameTooltip:Show()
     end)
     
@@ -190,13 +238,13 @@ local function CreateColorPicker(name, colorTable, tooltip)
     return picker
 end
 
-local bgColorPicker = CreateColorPicker("IcyVeinsBGColorPicker", "bgColor", "Background Color")
+local bgColorPicker = CreateColorPicker("IcyVeinsBGColorPicker", "bgColor", L["Background Color"])
 bgColorPicker:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", 0, 1)
 
-local borderColorPicker = CreateColorPicker("IcyVeinsBorderColorPicker", "borderColor", "Border Color")
+local borderColorPicker = CreateColorPicker("IcyVeinsBorderColorPicker", "borderColor", L["Border Color"])
 borderColorPicker:SetPoint("RIGHT", bgColorPicker, "LEFT", -1, 0)
 
-local fontColorPicker = CreateColorPicker("IcyVeinsFontColorPicker", "fontColor", "Font Color")
+local fontColorPicker = CreateColorPicker("IcyVeinsFontColorPicker", "fontColor", L["Font Color"])
 fontColorPicker:SetPoint("RIGHT", borderColorPicker, "LEFT", -1, 0)
 
 -----------------------------------------------
@@ -264,11 +312,11 @@ local function ShowCustomFrame(sp, desc, k, isSelected)
 	    customFrame.eb2:SetScript("OnEditFocusLost", function() customFrame.eb2:HighlightText(0, 0) end)
         customFrame.eb2:SetPoint("TOPLEFT", customFrame.eb1, "BOTTOMLEFT", 0, -1)
         
-        customFrame.cancelBtn = CreateButton(customFrame, {.6, .1, .1, 1}, {0, 0, 0, 1}, height, height, "×")
+        customFrame.cancelBtn = CreateButton(customFrame, {0.6, 0.1, 0.1, 1}, {0, 0, 0, 1}, height, height, "×")
         customFrame.cancelBtn:SetPoint("TOPRIGHT", customFrame.eb1, "BOTTOMRIGHT", 0, -1)
         customFrame.cancelBtn:SetScript("OnClick", function() customFrame:Hide() end)
         
-        customFrame.confirmBtn = CreateButton(customFrame, {.1, .6, .1, 1}, {0, 0, 0, 1}, height, height, "√")
+        customFrame.confirmBtn = CreateButton(customFrame, {0.1, 0.6, 0.1, 1}, {0, 0, 0, 1}, height, height, "√")
         customFrame.confirmBtn:SetPoint("RIGHT", customFrame.cancelBtn, "LEFT", 1, 0)
         
         customFrame.eb1:SetPoint("TOPLEFT")
@@ -326,9 +374,9 @@ local function ShowCustomFrame(sp, desc, k, isSelected)
         frame:Click()
     end)
 
-    customFrame.eb1:SetText(sp or "Stat Priority")
+    customFrame.eb1:SetText(sp or L["Stat Priority"])
     customFrame.eb1:ClearFocus()
-    customFrame.eb2:SetText(desc or "Description")
+    customFrame.eb2:SetText(desc or L["Description"])
     customFrame.eb2:ClearFocus()
     customFrame:Show()
 end
@@ -352,13 +400,13 @@ local function AddItem(text, k)
 
     -- delete/edit button
     if k then
-        item.edit = CreateButton(item, {0, .5, .8, 1}, IVSP_Config["borderColor"], item:GetHeight(), item:GetHeight(), "E")
+        item.edit = CreateButton(item, {0, 0.5, 0.8, 1}, IVSP_Config["borderColor"], item:GetHeight(), item:GetHeight(), "!")
         item.edit:SetPoint("LEFT", item, "RIGHT", -1, 0)
         item.edit:SetScript("OnClick", function()
             ShowCustomFrame(IVSP_Custom[currentSpecID][k][1], IVSP_Custom[currentSpecID][k][2], k, IVSP_Config["selected"][currentSpecID] == item.n)
         end)
 
-        item.del = CreateButton(item, {.6, .1, .1, 1}, IVSP_Config["borderColor"], item:GetHeight(), item:GetHeight(), "×")
+        item.del = CreateButton(item, {0.6, 0.1, 0.1, 1}, IVSP_Config["borderColor"], item:GetHeight(), item:GetHeight(), "×")
         item.del:SetPoint("LEFT", item.edit, "RIGHT", -1, 0)
         item.del:SetScript("OnClick", function()
             if IsShiftKeyDown() then
@@ -376,7 +424,7 @@ local function AddItem(text, k)
                 IVSP:LoadList()
                 frame:Click()
             else
-                print("|cff69CCF0IVSP:|r Shift + Left Click to delete it.")
+                print("|cff69CCF0IVSP:|r "..L["Shift + Left-Click to delete it."])
             end
         end)
     end
@@ -393,6 +441,7 @@ local function AddItem(text, k)
         borderColorPicker:Hide()
         fontColorPicker:Hide()
         addBtn:Hide()
+        versionText:Hide()
 
         for _, i in pairs(items) do
             i.highlight:Hide()
@@ -408,9 +457,11 @@ end
 -- load list
 -----------------------------------------------
 function IVSP:LoadList()
+    isItemsShown = false
     bgColorPicker:Hide()
     borderColorPicker:Hide()
     fontColorPicker:Hide()
+    versionText:Hide()
     
     textWidth = 0
     for _, i in pairs(items) do
@@ -422,6 +473,7 @@ function IVSP:LoadList()
 
     -- "+" button
     if not addBtn then addBtn = CreateButton(frame, IVSP_Config["bgColor"], IVSP_Config["borderColor"], select(2, IVSP_FONT:GetFont()) + 7, select(2, IVSP_FONT:GetFont()) + 7, "+") end
+    -- addBtn:SetTexture("Interface\\Addons\\IcyVeinsStatPriority\\Media\\create.blp", {16, 16}, {"CENTER", 0, 0})
     addBtn:Hide()
     addBtn:ClearAllPoints()
     addBtn:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
@@ -431,15 +483,19 @@ function IVSP:LoadList()
     end)
     
     local desc = IVSP:GetSPDesc(currentSpecID)
-    if not desc then return end
-
+    
     for k, t in pairs(desc) do
         AddItem(t[1], t[2])
         if k == 1 then
             items[1]:SetPoint("TOPLEFT", frame, "TOPRIGHT", 1, 0)
         else
-            items[k]:SetPoint("TOP", items[k-1], "BOTTOM", 0, -1)
+            items[k]:SetPoint("TOPLEFT", items[k-1], "BOTTOMLEFT", 0, -1)
         end
+    end
+    
+    if #items == 0 then
+        addBtn:Hide()
+        return
     end
 
     -- re-set "+" buttona point
@@ -469,18 +525,23 @@ classFrame:Hide()
 
 local specFrame = CreateFrame("Frame", "IcyVeinsStatPrioritySpecFrame", classFrame, "BackdropTemplate")
 specFrame:SetPoint("TOPLEFT", classFrame, "TOPRIGHT", 1, 0)
-specFrame:SetSize(300, 100)
+specFrame:SetSize(100, 100)
 specFrame:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1})
-specFrame:SetBackdropColor(.1, .1, .1, .9)
+specFrame:SetBackdropColor(0.1, 0.1, 0.1, 0.9)
 specFrame:Hide()
 
 local content = CreateFrame("SimpleHTML", nil, specFrame)
-content:SetPoint("TOP", 0, -5)
-content:SetWidth(specFrame:GetWidth() - 10)
+-- content:SetPoint("TOP", 0, -5)
+-- content:SetWidth(specFrame:GetWidth() - 10)
+content:SetPoint("TOPLEFT", 5, -5)
+content:SetPoint("TOPRIGHT", -5, -5)
+content:SetHeight(20)
 content:SetSpacing("p", 5)
-content:SetFontObject("p", "IVSP_FONT")
+content:SetFontObject("p", "IVSP_FONT_P")
 
 content:SetScript("OnHyperlinkClick", function(self, link, text, button)
+    -- NOTE: text => |HPaladin-Protection|h***********|h
+    text = string.match(text, ".*\124h(.+)\124h.*")
     local editBox = ChatEdit_ChooseBoxForSend()
     ChatEdit_ActivateChat(editBox)
     editBox:SetText("[" .. link .. "] " .. text)
@@ -492,6 +553,10 @@ classFrame:SetScript("OnHide", function()
     specFrame:Hide()
     classLoaded = 0
 end)
+
+-- NOTE: used to update specFrame
+local specFrameHiddenText = specFrame:CreateFontString(nil, "OVERLAY", "IVSP_FONT_P")
+specFrameHiddenText:Hide()
 
 -----------------------------------------------
 -- load classes
@@ -506,10 +571,10 @@ function IVSP:LoadClasses()
         for classID = 1, 12 do
             local className, classFile = GetClassInfo(classID)
             local r, g, b = RAID_CLASS_COLORS[classFile].r, RAID_CLASS_COLORS[classFile].g, RAID_CLASS_COLORS[classFile].b
+            local colorStr = "|c" .. RAID_CLASS_COLORS[classFile].colorStr
 
-            classBtns[classID] = CreateButton(classFrame, {.1, .1, .1, .9}, {r, g, b, 1}, 
-                select(2, IVSP_FONT:GetFont()) + 7, select(2, IVSP_FONT:GetFont()) + 7, 
-                "|c" .. RAID_CLASS_COLORS[classFile].colorStr .. className)
+            classBtns[classID] = CreateButton(classFrame, {0.1, 0.1, 0.1, 0.9}, {r, g, b, 1}, 
+                select(2, IVSP_FONT:GetFont()) + 7, select(2, IVSP_FONT:GetFont()) + 7, colorStr .. className)
             textWidth = math.max(textWidth, classBtns[classID]:GetFontString():GetStringWidth())
             
             if classID == 1 then
@@ -550,21 +615,28 @@ function IVSP:LoadClasses()
                 self.highlight:Show()
 
                 -- load
+                local maxWidth = 0
                 local details = ""
                 for _, specID in pairs(classBtns[classID]["specs"]) do
-                    local _, name = GetSpecializationInfoByID(specID)
-                    details = details .. "<p>[" .. name .. "]</p>"
+                    local _, specName = GetSpecializationInfoByID(specID)
+                    details = details .. "<p>[" .. specName .. "]</p>"
 
                     for _, sp in pairs(IVSP:GetSP(specID)) do
-                        details = details .. "<p><a href=\"" .. className .. " - " .. name .. "\">" .. sp .. "</a></p>"
+                        details = details .. "<p>" .. colorStr .. "<a href=\"" .. className .. " - " .. specName .. "\">" .. sp .. "</a>|r</p>"
+                        specFrameHiddenText:SetText(sp)
+                        maxWidth = math.max(specFrameHiddenText:GetStringWidth(), maxWidth)
                     end
                     details = details .. "<br/>"
                 end
-                details = details .. "<p>|cFFB2B2B2READ ONLY. Click on stat priority text to send</p>"
+                details = details .. "<p>|cFFB2B2B2" .. L["Click on stat priority text to send."] .. "|r</p>"
                 content:SetText("<html><body>" .. details .. "</body></html>")
+
+                specFrameHiddenText:SetText(L["Click on stat priority text to send."])
+                maxWidth = math.max(specFrameHiddenText:GetStringWidth(), maxWidth)
                 
                 content:SetHeight(content:GetContentHeight())
                 specFrame:SetHeight(content:GetContentHeight() + 10)
+                specFrame:SetWidth(maxWidth + 10)
 
                 specFrame:SetBackdropBorderColor(r, g, b)
                 specFrame:Show()
@@ -607,7 +679,7 @@ frame:SetScript("OnClick", function(self, button, down)
             bgColorPicker:Show()
             borderColorPicker:Show()
             fontColorPicker:Show()
-            addBtn:Show()
+            if #items ~= 0 then addBtn:Show() end
             versionText:Show()
         end
     elseif button == "RightButton" then
@@ -651,7 +723,7 @@ function frame:ADDON_LOADED(arg1)
         if type(IVSP_Custom) ~= "table" then IVSP_Custom = {} end
         if type(IVSP_Config) ~= "table" then IVSP_Config = {} end
         if type(IVSP_Config["show"]) ~= "boolean" then IVSP_Config["show"] = true end
-        if type(IVSP_Config["bgColor"]) ~= "table" then IVSP_Config["bgColor"] = {.1, .1, .1, .9} end
+        if type(IVSP_Config["bgColor"]) ~= "table" then IVSP_Config["bgColor"] = {0.1, 0.1, 0.1, 0.9} end
         if type(IVSP_Config["borderColor"]) ~= "table" then IVSP_Config["borderColor"] = {0, 0, 0, 1} end
         if type(IVSP_Config["fontColor"]) ~= "table" then IVSP_Config["fontColor"] = {1, 1, 1, 1} end
         if type(IVSP_Config["fontSize"]) ~= "number" then IVSP_Config["fontSize"] = 13 end
@@ -661,7 +733,7 @@ function frame:ADDON_LOADED(arg1)
         SetFrame(IVSP_Config["bgColor"], IVSP_Config["borderColor"], IVSP_Config["fontColor"], IVSP_Config["fontSize"], IVSP_Config["show"])
 
         if not IVSP_Config["helpViewed"] then
-            SetHelpFrame(IVSP_Config["bgColor"], IVSP_Config["borderColor"])
+            ShowHelpFrame(IVSP_Config["bgColor"], IVSP_Config["borderColor"])
         end
 
         bgColorPicker:SetBackdropColor(unpack(IVSP_Config["bgColor"]))
@@ -706,9 +778,9 @@ function SlashCmdList.ICYVEINSSTATPRIORITY(msg, editbox)
         IVSP_Config = nil
         ReloadUI()
     else -- help
-        print("|cff69CCF0Icy Veins Stat Priority help:|r")
-        print("|cff69CCF0/ivsp show/hide|r: show/hide IVSP.")
-        print("|cff69CCF0/ivsp font [fontSize]|r: set font size (default 13).")
-        print("|cff69CCF0/ivsp reset|r: reset all settings and reload UI.")
+        print("|cff69CCF0Icy Veins Stat Priority|r "..L["help"]..":")
+        print("|cff69CCF0/ivsp show/hide|r: "..L["show/hide IVSP."])
+        print("|cff69CCF0/ivsp font [fontSize]|r: "..L["set font size (default 13)."])
+        print("|cff69CCF0/ivsp reset|r: "..L["reset IVSP and reload UI."])
     end
 end
