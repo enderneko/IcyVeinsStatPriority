@@ -1,4 +1,4 @@
-# <font color="#69CCF0">Icy Veins Stat Priority</font>
+# Icy Veins Stat Priority
 
 ![preview](https://raw.githubusercontent.com/enderneko/ImageUpload/master/202203142312494.png)
 
@@ -8,7 +8,7 @@ This is just another stat priority addon. All data are taken from Icy Veins.
 
 Unlike those addons, you can change background/border/font color easily.
 
-And it supports MORE THAN ONE stat priority! To switch between them, just click on it!
+And it supports __MORE THAN ONE__ stat priority! To switch between them, just click on it!
 
 ## View all stat priorities
 
