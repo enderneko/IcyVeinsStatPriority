@@ -4,7 +4,7 @@ local L = IVSP.L
 local data = {
     -- 250 - Death Knight: Blood -- https://www.icy-veins.com/wow/blood-death-knight-pve-tank-stat-priority
     [250] = {
-        {"Item Level > Versatility > Haste > Critical Strike > Mastery"},
+        {"Item Level > Haste > Versatility > Critical Strike > Mastery"},
     },
     -- 251 - Death Knight: Frost -- https://www.icy-veins.com/wow/frost-death-knight-pve-dps-stat-priority
     [251] = {
@@ -36,7 +36,7 @@ local data = {
     -- 104 - Druid: Guardian -- https://www.icy-veins.com/wow/guardian-druid-pve-tank-stat-priority
     [104] = {
         {"Item Level > Armor = Agility = Stamina > Versatility > Mastery > Haste > Critical Strike", "Survivability"},
-        {"Versatility ≥ Haste ≥ Critical Strike > Mastery", "Damage Output"},
+        {"Versatility > Haste = Critical Strike = Mastery", "Damage Output"},
     },
     -- Druid: Restoration -- https://www.icy-veins.com/wow/restoration-druid-pve-healing-stat-priority
     [105] = {
@@ -116,7 +116,7 @@ local data = {
 
     -- 259 - Rogue: Assassination -- https://www.icy-veins.com/wow/assassination-rogue-pve-dps-stat-priority
     [259] = {
-        {"Critical Strike > Haste > Mastery > Versatility", "Raid"},
+        {"Haste > Critical Strike > Mastery > Versatility", "Raid"},
         {"Critical Strike > Mastery > Haste > Versatility", "Mythic+"},
     },
     -- 260 - Rogue: Outlaw -- https://www.icy-veins.com/wow/outlaw-rogue-pve-dps-stat-priority
