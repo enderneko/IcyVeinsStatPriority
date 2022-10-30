@@ -76,10 +76,10 @@ frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
 -- function
 local function SetFrame(bgColor, borderColor, fontColor, fontSize, show)
-    IVSP_FONT:SetFont(GameFontNormal:GetFont(), fontSize)
+    IVSP_FONT:SetFont(GameFontNormal:GetFont(), fontSize, "")
     IVSP_FONT:SetTextColor(unpack(fontColor))
 
-    IVSP_FONT_P:SetFont(GameFontNormal:GetFont(), fontSize)
+    IVSP_FONT_P:SetFont(GameFontNormal:GetFont(), fontSize, "")
     
     frame:SetNormalFontObject(IVSP_FONT)
 
@@ -597,7 +597,7 @@ function IVSP:LoadClasses()
             classBtns[classID].highlight:SetPoint("TOPRIGHT")
             classBtns[classID].highlight:SetPoint("BOTTOMLEFT", classBtns[classID], "BOTTOM")
             classBtns[classID].highlight:SetTexture("Interface\\Buttons\\WHITE8x8")
-            classBtns[classID].highlight:SetGradientAlpha("HORIZONTAL", r, g, b, 0, r, g, b, .77)
+            classBtns[classID].highlight:SetGradient("HORIZONTAL", CreateColor(r, g, b, 0), CreateColor(r, g, b, 0.77))
             classBtns[classID].highlight:Hide()
 
             classBtns[classID]:SetScript("OnHide", function(self)
@@ -772,7 +772,7 @@ function SlashCmdList.ICYVEINSSTATPRIORITY(msg, editbox)
         IVSP_Config["show"] = false
     elseif command == "font" then
         IVSP_Config["fontSize"] = tonumber(rest) or 13
-        IVSP_FONT:SetFont(GameFontNormal:GetFont(), IVSP_Config["fontSize"])
+        IVSP_FONT:SetFont(GameFontNormal:GetFont(), IVSP_Config["fontSize"], "")
         frame:SetHeight(IVSP_Config["fontSize"] + 7)
     elseif command == "reset" then
         IVSP_Config = nil
