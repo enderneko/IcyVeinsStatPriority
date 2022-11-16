@@ -35,7 +35,7 @@ local data = {
     },
     -- 104 - Druid: Guardian -- https://www.icy-veins.com/wow/guardian-druid-pve-tank-stat-priority
     [104] = {
-        {"Item Level > Armor = Agility = Stamina > Haste > Versatility > Mastery > Critical Strike", "Survivability"},
+        {"Agility > Haste > Versatility > Mastery > Critical Strike", "Survivability"},
         {"Versatility = Haste > Critical Strike = Mastery", "Damage Output"},
     },
     -- Druid: Restoration -- https://www.icy-veins.com/wow/restoration-druid-pve-healing-stat-priority
@@ -45,10 +45,15 @@ local data = {
         {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Dungeon Damage Dealing"},
     },
 
-    -- Evoker: Devastation
-    [1467] = {},
-    -- Evoker: Preservation
-    [1468] = {},
+    -- Evoker: Devastation -- https://www.icy-veins.com/wow/devastation-evoker-pve-dps-stat-priority
+    [1467] = {
+        {"Intellect > Mastery > Haste > Critical Strike > Versatility"},
+    },
+    -- Evoker: Preservation -- https://www.icy-veins.com/wow/preservation-evoker-pve-healing-stat-priority
+    [1468] = {
+        {"Intellect > Critical Strike > Mastery > Versatility > Haste", "Raiding"},
+        {"Intellect > Critical Strike > Versatility > Haste > Mastery", "Mythic+"},
+    },
 
     -- 253 - Hunter: Beast Mastery -- https://www.icy-veins.com/wow/beast-mastery-hunter-pve-dps-stat-priority
     [253] = {
@@ -56,7 +61,7 @@ local data = {
     },
     -- 254 - Hunter: Marksmanship -- https://www.icy-veins.com/wow/marksmanship-hunter-pve-dps-stat-priority
     [254] = {
-        {"Mastery = Critical Strike > Versatility > Haste"},
+        {"Mastery > Critical Strike > Versatility > Haste"},
     },
     -- 255 - Hunter: Survival -- https://www.icy-veins.com/wow/survival-hunter-pve-dps-stat-priority
     [255] = {
@@ -152,7 +157,7 @@ local data = {
     },
     -- 266 - Warlock: Demonology -- https://www.icy-veins.com/wow/demonology-warlock-pve-dps-stat-priority
     [266] = {
-        {"Intellect > Mastery > Haste > Critical Strike > Versatility"},
+        {"Intellect > Haste > Mastery > Critical Strike ≈ Versatility"},
     },
     -- 267 - Warlock: Destruction -- https://www.icy-veins.com/wow/destruction-warlock-pve-dps-stat-priority
     [267] = {

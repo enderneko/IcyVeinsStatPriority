@@ -568,7 +568,7 @@ function IVSP:LoadClasses()
         classLoaded = 0
         local textWidth = 0
 
-        for classID = 1, 12 do
+        for classID = 1, 13 do
             local className, classFile = GetClassInfo(classID)
             local r, g, b = RAID_CLASS_COLORS[classFile].r, RAID_CLASS_COLORS[classFile].g, RAID_CLASS_COLORS[classFile].b
             local colorStr = "|c" .. RAID_CLASS_COLORS[classFile].colorStr
