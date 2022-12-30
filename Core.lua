@@ -609,7 +609,7 @@ function IVSP:LoadClasses()
                 if classLoaded == classID then return end
                 classLoaded = classID
 
-                for i = 1, 12 do
+                for i = 1, 13 do
                     classBtns[i].highlight:Hide()
                 end
                 self.highlight:Show()
