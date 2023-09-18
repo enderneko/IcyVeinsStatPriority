@@ -4,7 +4,7 @@ local L = IVSP.L
 local data = {
     -- 250 - Death Knight: Blood -- https://www.icy-veins.com/wow/blood-death-knight-pve-tank-stat-priority
     [250] = {
-        {"Item Level > Haste > Critical Strike = Mastery > Versatility"},
+        {"Item Level > Haste = Critical Strike = Versatility = Mastery"},
     },
     -- 251 - Death Knight: Frost -- https://www.icy-veins.com/wow/frost-death-knight-pve-dps-stat-priority
     [251] = {
@@ -97,13 +97,13 @@ local data = {
     },
     -- 270 - Monk: Mistweaver -- https://www.icy-veins.com/wow/mistweaver-monk-pve-healing-stat-priority
     [270] = {
-        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Raid"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Raiding"},
         {"Intellect > Haste > Mastery > Versatility > Critical Strike", "Mythic+"},
     },
 
     -- 65 - Paladin: Holy -- https://www.icy-veins.com/wow/holy-paladin-pve-healing-stat-priority
     [65] = {
-        {"Intellect > Critical Strike > Mastery = Haste > Versatility", "Raid"},
+        {"Intellect > Critical Strike > Mastery = Haste > Versatility", "Raiding"},
         {"Intellect > Critical Strike > Haste > Versatility > Mastery", "Mythic+"},
     },
     -- 66 - Paladin: Protection -- https://www.icy-veins.com/wow/protection-paladin-pve-tank-stat-priority
@@ -112,7 +112,8 @@ local data = {
     },
     -- 70 - Paladin: Retribution -- https://www.icy-veins.com/wow/retribution-paladin-pve-dps-stat-priority
     [70] = {
-        {"Strength > Versatility > Critical Strike = Haste > Mastery"},
+        {"Strength > Haste > Versatility = Critical Strike > Mastery", "Crusading Strikes"},
+        {"Strength > Versatility > Haste = Critical Strike > Mastery", "Templar Strikes"},
     },
 
     -- 256 - Priest: Discipline -- https://www.icy-veins.com/wow/discipline-priest-pve-healing-stat-priority
