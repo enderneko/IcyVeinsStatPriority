@@ -14,7 +14,7 @@ local data = {
     -- 252 - Death Knight: Unholy -- https://www.icy-veins.com/wow/unholy-death-knight-pve-dps-stat-priority
     [252] = {
         {"Mastery > Haste > Critical Strike > Versatility", "Single-Target"},
-	{"Mastery > Haste > Versatility > Critical Strike", "Multi-Target"},
+        {"Mastery > Haste > Versatility > Critical Strike", "Multi-Target"},
     },
 
     -- 577 - Demon Hunter: Havoc -- https://www.icy-veins.com/wow/havoc-demon-hunter-pve-dps-stat-priority
@@ -72,14 +72,14 @@ local data = {
     [254] = {
         {"Weapon Damage > Critical Strike > Mastery > Haste > Versatility", "Sentinel (ST)"},
         {"Weapon Damage > Critical Strike > Mastery > Versatility > Haste", "Sentinel (AoE)"},
-	{"Weapon Damage > Critical Strike > Haste > Mastery > Versatility", "Dark Ranger"},
+        {"Weapon Damage > Critical Strike > Haste > Mastery > Versatility", "Dark Ranger"},
     },
     -- 255 - Hunter: Survival -- https://www.icy-veins.com/wow/survival-hunter-pve-dps-stat-priority
     [255] = {
         {"Agility > Critical Strike > Mastery > Haste > Versatility", "Pack Leader (ST)"},
         {"Agility > Critical Strike > Haste = Mastery > Versatility", "Pack Leader (AoE)"},
         {"Agility > Mastery > Critical Strike > Versatility > Haste", "Sentinel (ST)"},
-	{"Agility > Mastery > Haste = Critical Strike > Versatility", "Sentinel (AoE)"},
+        {"Agility > Mastery > Haste = Critical Strike > Versatility", "Sentinel (AoE)"},
     },
 
     -- 62 - Mage: Arcane -- https://www.icy-veins.com/wow/arcane-mage-pve-dps-stat-priority
@@ -118,7 +118,7 @@ local data = {
     },
     -- 66 - Paladin: Protection -- https://www.icy-veins.com/wow/protection-paladin-pve-tank-stat-priority
     [66] = {
-        {"Strength > Haste > Mastery > Versatility = Critical Strike"},
+        {"Strength > Haste >= Mastery >= Versatility = Critical Strike"},
     },
     -- 70 - Paladin: Retribution -- https://www.icy-veins.com/wow/retribution-paladin-pve-dps-stat-priority
     [70] = {
