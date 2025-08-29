@@ -6,6 +6,7 @@
 ## SavedVariables: IVSP_Config, IVSP_Custom
 
 ## X-Curse-Project-ID: 286395
+## X-Wago-ID: Mj6jZ16R
 
 Locales\enUS.lua
 Locales\zhCN.lua
