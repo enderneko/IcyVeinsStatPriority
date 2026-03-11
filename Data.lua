@@ -9,21 +9,25 @@ local data = {
     },
     -- 251 - Death Knight: Frost -- https://www.icy-veins.com/wow/frost-death-knight-pve-dps-stat-priority
     [251] = {
-        {"Critical Strike > Mastery > Haste > Versatility"},
+        {"Mastery > Critical Strike > Haste > Versatility"},
     },
     -- 252 - Death Knight: Unholy -- https://www.icy-veins.com/wow/unholy-death-knight-pve-dps-stat-priority
     [252] = {
-        {"Haste > Mastery > Critical Strike > Versatility"},
+        {"Mastery > Critical Strike > Haste > Versatility"},
     },
 
+    -- 1480 - Demon Hunter: Devourer -- https://www.icy-veins.com/wow/devourer-demon-hunter-pve-dps-stat-priority
+    [1480] = {
+        {"Intellect > Haste > Mastery > Critical Strike > Versatility", "Annihilator"},
+        {"Intellect > Mastery > Haste > Critical Strike > Versatility", "Void-Scarred"},
+    },
     -- 577 - Demon Hunter: Havoc -- https://www.icy-veins.com/wow/havoc-demon-hunter-pve-dps-stat-priority
     [577] = {
-        {"Critical Strike > Mastery > Haste > Versatility > Agility", "Aldrachi"},
-        {"Mastery = Critical Strike > Haste > Versatility > Agility", "Fel-Scarred"},
+        {"Agility > Critical Strike > Mastery > Haste > Versatility"},
     },
     -- 581 - Demon Hunter: Vengeance -- https://www.icy-veins.com/wow/vengeance-demon-hunter-pve-tank-stat-priority
     [581] = {
-        {"Agility > Haste = Critical Strike > Versatility > Mastery"},
+        {"Agility > Haste > Critical Strike = Versatility > Mastery"},
     },
 
     -- 102 - Druid: Balance -- https://www.icy-veins.com/wow/balance-druid-pve-dps-stat-priority
@@ -32,8 +36,8 @@ local data = {
     },
     -- 103 - Druid: Feral -- https://www.icy-veins.com/wow/feral-druid-pve-dps-stat-priority
     [103] = {
-        {"Critical Strike = Mastery > Haste = Versatility > Agility", "Single-Target"},
-        {"Critical Strike = Mastery > Versatility > Haste > Agility", "Multi-Target"},
+        {"Agility > Mastery > Critical Strike = Haste > Versatility", "Druid of the Claw"},
+        {"Agility > Mastery > Haste > Critical Strike > Versatility", "Wildstalker"},
     },
     -- 104 - Druid: Guardian -- https://www.icy-veins.com/wow/guardian-druid-pve-tank-stat-priority
     [104] = {
@@ -41,8 +45,8 @@ local data = {
     },
     -- Druid: Restoration -- https://www.icy-veins.com/wow/restoration-druid-pve-healing-stat-priority
     [105] = {
-        {"Intellect > Haste = Mastery > Versatility > Critical Strike", "General Healing"},
-        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Dungeon Damage Dealing"},
+        {"Intellect > Haste = Mastery > Versatility > Critical Strike", "Raiding"},
+        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Mythic+"},
     },
 
     -- Evoker: Devastation -- https://www.icy-veins.com/wow/devastation-evoker-pve-dps-stat-priority
@@ -51,125 +55,115 @@ local data = {
     },
     -- Evoker: Preservation -- https://www.icy-veins.com/wow/preservation-evoker-pve-healing-stat-priority
     [1468] = {
-        {"Intellect > Mastery > Critical Strike > Haste > Versatility", "Raiding"},
-        {"Intellect > Critical Strike > Haste > Versatility > Mastery", "Mythic+"},
+        {"Intellect > Mastery > Haste > Critical Strike > Versatility"},
     },
     -- Evoker: Augmentation -- https://www.icy-veins.com/wow/augmentation-evoker-pve-dps-stat-priority
     [1473] = {
-        {"Intellect > Mastery > Critical Strike > Haste > Versatility", "Chronowarden"},
-        {"Intellect > Critical Strike > Haste > Mastery > Versatility", "Scalecommander"},
+        {"Intellect > Critical Strike > Haste > Mastery = Versatility", "Chronowarden"},
+        {"Intellect > Haste > Critical Strike > Mastery = Versatility", "Scalecommander"},
     },
 
     -- 253 - Hunter: Beast Mastery -- https://www.icy-veins.com/wow/beast-mastery-hunter-pve-dps-stat-priority
     [253] = {
-        {"Agility > Haste (40%) > Mastery = Critical Strike > Haste (>40%) > Versatility", "Pack Leader (ST)"},
-        {"Agility > Haste (40%) > Critical Strike > Haste (>40%) > Mastery > Versatility", "Pack Leader (AoE)"},
-        {"Agility > Critical Strike = Haste > Versatility > Mastery", "Dark Ranger (ST)"},
-        {"Agility > Critical Strike = Haste > Mastery > Versatility", "Dark Ranger (AoE)"},
+        {"Agility > Mastery > Critical Strike > Haste > Versatility"},
     },
     -- 254 - Hunter: Marksmanship -- https://www.icy-veins.com/wow/marksmanship-hunter-pve-dps-stat-priority
     [254] = {
-        {"Weapon Damage > Critical Strike > Mastery > Versatility > Haste", "Single Target"},
-        {"Weapon Damage > Critical Strike > Mastery > Versatility > Haste", "Sentinel (AoE)"},
-        {"Weapon Damage > Critical Strike > Haste = Mastery > Versatility", "Dark Ranger (AoE)"},
+        {"Agility > Critical Strike > Mastery > Haste > Versatility"},
     },
     -- 255 - Hunter: Survival -- https://www.icy-veins.com/wow/survival-hunter-pve-dps-stat-priority
     [255] = {
-        {"Agility > Mastery > Haste > Critical Strike > Versatility", "Pack Leader"},
-        {"Agility > Mastery > Critical Strike > Haste > Versatility", "Sentinel (ST)"},
-        {"Agility > Mastery > Haste > Critical Strike > Versatility", "Sentinel (AoE)"},
+        {"Agility > Mastery > Critical Strike > Haste > Versatility"},
     },
 
     -- 62 - Mage: Arcane -- https://www.icy-veins.com/wow/arcane-mage-pve-dps-stat-priority
     [62] = {
-        {"Intellect > Haste > Versatility > Mastery > Critical Strike"},
+        {"Intellect > Mastery > Versatility > Critical Strike > Haste"},
     },
     -- 63 - Mage: Fire -- https://www.icy-veins.com/wow/fire-mage-pve-dps-stat-priority
     [63] = {
-        {"Intellect > Haste >> Mastery > Versatility > Critical Strike"},
+        {"Intellect > Haste > Mastery > Versatility > Critical Strike"},
     },
     -- 64 - Mage: Frost -- https://www.icy-veins.com/wow/frost-mage-pve-dps-stat-priority
     [64] = {
-        {"Intellect > Haste > Critical Strike (33.34%) > Mastery > Versatility > Critical Strike (>33.34%)"},
+        {"Intellect > Mastery > Critical Strike > Haste > Versatility"},
     },
 
     -- 268 - Monk: Brewmaster -- https://www.icy-veins.com/wow/brewmaster-monk-pve-tank-stat-priority
     [268] = {
         {"Agility > Versatility = Mastery = Critical Strike > Haste", "Defensive"},
-        {"Agility > Versatility = Critical Strike > Mastery > Haste", "Offensive"},
+        {"Agility > Critical Strike > Mastery > Versatility > Haste", "Offensive"},
     },
     -- 269 - Monk: Windwalker -- https://www.icy-veins.com/wow/windwalker-monk-pve-dps-stat-priority
     [269] = {
-        {"Weapon Damage > Agility > Mastery = Haste > Versatility = Critical Strike"},
+        {"Agility > Critical Strike > Haste > Mastery > Versatility"},
     },
     -- 270 - Monk: Mistweaver -- https://www.icy-veins.com/wow/mistweaver-monk-pve-healing-stat-priority
     [270] = {
-        {"Intellect > Haste > Critical Strike > Versatility = Mastery", "Raiding"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Raiding"},
         {"Intellect > Haste > Critical Strike >= Versatility > Mastery", "Mythic+"},
     },
 
     -- 65 - Paladin: Holy -- https://www.icy-veins.com/wow/holy-paladin-pve-healing-stat-priority
     [65] = {
-        {"Intellect > Haste > Mastery > Critical Strike > Versatility", "Raiding"},
-        {"Intellect > Critical Strike > Haste > Mastery > Versatility", "Raiding - Avenging Crusade"},
-        {"Intellect > Haste > Versatility > Critical Strike > Mastery", "Mythic+"},
+        {"Intellect > Mastery > Haste > Critical Strike > Versatility", "Raiding = Hearld of the Sum"},
+        {"Intellect > Mastery > Critical Strike > Haste > Versatility", "Raiding - Lightsmith"},
+        {"Intellect > Haste > Critical Strike > Versatility > Mastery", "Mythic+"},
     },
     -- 66 - Paladin: Protection -- https://www.icy-veins.com/wow/protection-paladin-pve-tank-stat-priority
     [66] = {
-        {"Strength > Haste > Mastery > Versatility = Critical Strike"},
+        {"Strength > Haste > Mastery > Versatility = Critical Strike", "Templar"},
+        {"Strength > Haste > Critical Strike > Mastery = Versatility", "Lightsmith"},
     },
     -- 70 - Paladin: Retribution -- https://www.icy-veins.com/wow/retribution-paladin-pve-dps-stat-priority
     [70] = {
-        {"Strength > Mastery = Critical Strike > Haste > Versatility"},
+        {"Strength > Mastery = Haste > Critical Strike > Versatility"},
     },
 
     -- 256 - Priest: Discipline -- https://www.icy-veins.com/wow/discipline-priest-pve-healing-stat-priority
     [256] = {
-        {"Intellect > Haste > Mastery > Critical Strike > Versatility", "Voidweaver"},
-        {"Intellect > Haste (20%) > Critical Strike = Mastery > Haste (>20%) > Versatility", "Oracle"},
+        {"Intellect > Haste > Critical Strike > Mastery > Versatility"},
     },
     -- 257 - Priest: Holy -- https://www.icy-veins.com/wow/holy-priest-pve-healing-stat-priority
     [257] = {
-        {"Intellect > Critical Strike = Mastery > Versatility >= Haste", "Raiding"},
-        {"Intellect > Critical Strike = Haste > Versatility > Mastery", "Mythic+"},
+        {"Intellect > Critical Strike > Mastery = Versatility > Haste", "Raiding"},
+        {"Intellect > Critical Strike > Haste = Versatility > Mastery", "Mythic+"},
     },
     -- 258 - Priest: Shadow -- https://www.icy-veins.com/wow/shadow-priest-pve-dps-stat-priority
     [258] = {
-        {"Intellect > Mastery > Haste > Critical Strike > Versatility", "Single-Target"},
-        {"Intellect > Haste > Mastery > Critical Strike > Versatility", "Multi-Target"},
+        {"Intellect > Haste > Mastery > Critical Strike > Versatility"},
     },
 
     -- 259 - Rogue: Assassination -- https://www.icy-veins.com/wow/assassination-rogue-pve-dps-stat-priority
     [259] = {
-        {"Agility > Critical Strike > Mastery > Haste > Versatility"},
+        {"Agility > Critical Strike = Haste > Mastery > Versatility"},
     },
     -- 260 - Rogue: Outlaw -- https://www.icy-veins.com/wow/outlaw-rogue-pve-dps-stat-priority
     [260] = {
-        {"Agility > Versatility > Haste > Critical Strike > Mastery"},
+        {"Agility > Critical Strike > Haste > Versatility > Mastery"},
     },
     -- 261 - Rogue: Subtlety -- https://www.icy-veins.com/wow/subtlety-rogue-pve-dps-stat-priority
     [261] = {
-        {"Agility > Mastery > Versatility > Critical Strike > Haste"},
+        {"Agility > Haste (up to 700) > Mastery > Critical Strike > Haste (over 700) > Versatility"},
     },
 
     -- 262 - Shaman: Elemental -- https://www.icy-veins.com/wow/elemental-shaman-pve-dps-stat-priority
     [262] = {
-        {"Intellect > Mastery > Haste = Versatility > Critical Strike"},
+        {"Intellect > Mastery > Haste > Critical Strike > Versatility"},
     },
     -- 263 - Shaman: Enhancement -- https://www.icy-veins.com/wow/enhancement-shaman-pve-dps-stat-priority
     [263] = {
-        {"Haste > Mastery > Critical Strike > Versatility > Agility", "Stormbringer"},
-        {"Mastery > Haste > Critical Strike > Versatility > Agility", "Totemic"},
+        {"Agility > Haste > Mastery = Critical Strike > Versatility", "Stormbringer"},
+        {"Agility > Mastery > Haste > Critical Strike > Versatility", "Totemic"},
     },
     -- 264 - Shaman: Restoration -- https://www.icy-veins.com/wow/restoration-shaman-pve-healing-stat-priority
     [264] = {
-        {"Intellect > Critical Strike > Versatility > Haste = Mastery", "General"},
-        {"Intellect > Haste = Critical Strike > Versatility > Mastery", "Farseer with Whispering Waves"},
+        {"Intellect > Critical Strike = Versatility > Haste = Mastery"},
     },
 
     -- 265 - Warlock: Affliction -- https://www.icy-veins.com/wow/affliction-warlock-pve-dps-stat-priority
     [265] = {
-        {"Intellect > Mastery = Critical Strike > Haste > Versatility"},
+        {"Intellect > Haste = Critical Strike > Mastery > Versatility"},
     },
     -- 266 - Warlock: Demonology -- https://www.icy-veins.com/wow/demonology-warlock-pve-dps-stat-priority
     [266] = {
