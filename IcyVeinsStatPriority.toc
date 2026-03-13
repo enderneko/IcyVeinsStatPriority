@@ -1,9 +1,8 @@
-## Interface: 120000, 120001
+## Interface: 120001
 ## Title: |cff69CCF0Icy Veins|r Stat Priority
 ## Version: 2026-03-11
-## Author: enderneko
-## X-Contributor: Arseynimz
-## SavedVariables: IVSP_Config, IVSP_Custom
+## Author: enderneko,Arseynimz
+## SavedVariables: IVSP_Config,IVSP_Custom
 
 ## X-Curse-Project-ID: 286395
 ## X-Wago-ID: Mj6jZ16R
