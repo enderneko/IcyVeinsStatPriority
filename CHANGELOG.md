@@ -1,3 +1,3 @@
-[Full Changelog](https://github.com/enderneko/IcyVeinsStatPriority/compare/2025-04-25...d8df588e32729e3b661cbea6a0bfb6a046d044ca)
+[View Full Changelog](https://github.com/enderneko/IcyVeinsStatPriority/compare/2025-08-29...86f1b4bd65fecbfa446d67c6be65b6b613cf014a)
 
-- Update stats to 11.2.0 (#12 thanks @Arseynimz)
+- Midnight Updates (#14, thanks @Arseynimz)
