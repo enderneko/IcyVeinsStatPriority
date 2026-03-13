@@ -189,18 +189,20 @@ local data = {
 }
 
 local function LocalizeSP(text)
+    if type(text) ~= "string" then return "" end
+
     -- localize
-    text = string.gsub(text, "Haste", STAT_HASTE)
-    text = string.gsub(text, "Critical Strike", STAT_CRITICAL_STRIKE)
-    text = string.gsub(text, "Mastery", STAT_MASTERY)
-    text = string.gsub(text, "Versatility", STAT_VERSATILITY)
-    text = string.gsub(text, "Armor", STAT_ARMOR)
-    text = string.gsub(text, "Stamina", ITEM_MOD_STAMINA_SHORT)
-    text = string.gsub(text, "Strength", SPEC_FRAME_PRIMARY_STAT_STRENGTH)
-    text = string.gsub(text, "Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
-    text = string.gsub(text, "Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
-    text = string.gsub(text, "Weapon Damage", DAMAGE_TOOLTIP)
-    text = string.gsub(text, "Item Level", STAT_AVERAGE_ITEM_LEVEL)
+    text = text:gsub("Haste", STAT_HASTE)
+    text = text:gsub("Critical Strike", STAT_CRITICAL_STRIKE)
+    text = text:gsub("Mastery", STAT_MASTERY)
+    text = text:gsub("Versatility", STAT_VERSATILITY)
+    text = text:gsub("Armor", STAT_ARMOR)
+    text = text:gsub("Stamina", ITEM_MOD_STAMINA_SHORT)
+    text = text:gsub("Strength", SPEC_FRAME_PRIMARY_STAT_STRENGTH)
+    text = text:gsub("Agility", SPEC_FRAME_PRIMARY_STAT_AGILITY)
+    text = text:gsub("Intellect", SPEC_FRAME_PRIMARY_STAT_INTELLECT)
+    text = text:gsub("Weapon Damage", DAMAGE_TOOLTIP)
+    text = text:gsub("Item Level", STAT_AVERAGE_ITEM_LEVEL)
     return text
 end
 
